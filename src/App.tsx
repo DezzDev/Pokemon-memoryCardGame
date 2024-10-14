@@ -6,6 +6,10 @@ import "./App.css";
 import CardPokemon from "./components/cardPokemon/CardPokemon";
 import Loading from "./components/loading/Loading";
 
+// components chadcn 
+import { Button } from "@/components/ui/button"
+
+
 function App() {
   const url = "https://pokeapi.co/api/v2/pokemon";
 
@@ -227,16 +231,17 @@ function App() {
   }, [pokemons]);
 
   return (
-    <div className='app'>
-      <h1>Pokemon Match</h1>
+    <div className='flex flex-col items-center pt-20'>
+      <h1 className="text-yellow-500 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Pokemon Match</h1>
 
 
       <form id="pkmsCountForm" onSubmit={handleSubmit} >
         <div className='input-element'>
-          <label htmlFor="pkmsCount">Seleccione la cantidad de parejas (3-15) :</label>
+          <label htmlFor="pkmsCount">Seleccione la cantidad de parejas ( 3-15 ) :</label>
           <input type="number" name="pkmsCount" min="3" max="15" defaultValue={"6"} />
         </div>
-        <button>New Game</button>
+        <Button variant="outline">New game</Button>
+
       </form>
 
       <h3>Turns: {turns}</h3>
@@ -264,7 +269,7 @@ function App() {
             })
         }
 
-        {gameEnd && <h3>¡Los has logrado!</h3>}
+        {gameEnd && <h3 className="">¡Los has logrado!</h3>}
       </div>
 
     </div>
