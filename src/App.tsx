@@ -6,6 +6,9 @@ import "./App.css";
 import CardPokemon from "./components/cardPokemon/CardPokemon";
 import Loading from "./components/loading/Loading";
 
+
+
+
 function App() {
 	const url = "https://pokeapi.co/api/v2/pokemon";
 
@@ -262,6 +265,8 @@ function App() {
 							})
 				}
 			</div>
+
+      {gameEnd && <h3>!Lo has logrado¡</h3>}
 
 		</div>
 	);
