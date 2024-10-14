@@ -5,7 +5,7 @@ import react from "@vitejs/plugin-react-swc";
 export default defineConfig(({command})=>{
 	if(command === "build"){
 		return {
-			base:"/pokemon-card-game/",
+			base:"/Pokemon-memoryCardGame/",
 			plugins: [react()],
 		};
 	}else{
