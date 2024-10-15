@@ -9,8 +9,10 @@ import Swal from "sweetalert2";
 import "./App.css";
 import CardPokemon from "./components/cardPokemon/CardPokemon";
 import Loading from "./components/loading/Loading";
+
 import Settings from "./components/settings/Settings";
 import Marcador from "./components/marcador/Marcador";
+
 
 
 function App() {
@@ -29,6 +31,7 @@ function App() {
 	const [gameEnd, setGameEnd] = useState(false);
 	// state to loading
 	const [loading, setLoading] = useState(false);
+
 	// state to know how many pokemons we want
 	const [pkmCount, setPkmCount] = useState<number>(3);
 	// state to know selected card manually
@@ -62,6 +65,7 @@ function App() {
 			let pokemonData: Pokemon[] = [];
 			// function to generate as many random numbers as specified
 			const randomNums = generateRandomNum(1, 1025, pkmsCount);
+
 
 			for (let i = 0; i < randomNums.length; i++) {
 				const response = await fetch(`${url}/${randomNums[i]}`);
@@ -120,6 +124,7 @@ function App() {
 	/**
 	 * function to duplicate the Pokémon and sort it randomly
 	 * @param data Array with Pokémon
+
 	 */
 	// shuffle cards
 	const shuffleCards = (data: Pokemon[]) => {
@@ -161,6 +166,7 @@ function App() {
 	};
 
 	/**
+
 	 * set width of board
 	 * @param pkmNumber numbers of pkms
 	 * @returns 
@@ -282,6 +288,7 @@ function App() {
 		 * get the cards when click over there 
 		 * @param card data Pokémon
 		 */
+
 	const handleChoice = (card: PokemonMin) => {
 		if (choiceOne) {
 			if (choiceOne === card) {
@@ -303,6 +310,7 @@ function App() {
 	/**
 		 * reset choices and add one turn
 		 */
+
 	const resetTurn = () => {
 		setChoiceOne(null);
 		setChoiceTwo(null);
@@ -320,6 +328,7 @@ function App() {
 		// if choiceOne and choiceTwo have a value
 		if (choiceOne && choiceTwo) {
 
+
 			//disabled
 			setDisabled(true);
 			// if there are equal
@@ -332,7 +341,9 @@ function App() {
 					} else {
 						return prevPokemons.map(pokemon => {
 							if (pokemon.id === choiceOne.id) {
+
 								// update propertied matched to true
+
 								return { ...pokemon, matched: true };
 							} else {
 								return pokemon;
@@ -340,6 +351,7 @@ function App() {
 						});
 					}
 				});
+
 
 				// add point to player in turn
 				if (player1) {
@@ -354,6 +366,7 @@ function App() {
 				console.log("cambiamos el turno");
 				setPlayer1(prev => !prev);
 				setPlayer2(prev => !prev);
+
 			}
 
 			setTimeout(() => {
@@ -364,6 +377,7 @@ function App() {
 	}, [choiceOne, choiceTwo]);
 
 	/**
+
 		 * to check if all cards are matched
 		 */
 	useEffect(() => {
@@ -486,6 +500,7 @@ function App() {
 					: pokemons &&
 					<div className={`card-container ${width}`}>
 						{
+
 							pokemons.map((pokemon, index) => {
 								return (
 									<CardPokemon
@@ -496,6 +511,7 @@ function App() {
 											pokemon === choiceOne ||
 											pokemon === choiceTwo ||
 											pokemon.matched
+
 										}
 										disabled={disabled}
 									/>
@@ -513,6 +529,7 @@ function App() {
 				setManually={setManually}
 				setTwoPlayers={setTwoPlayers}
 			/>
+
 
 
 		</div>

@@ -22,7 +22,6 @@ export default function CardPokemon({
 		}
 	};
 
-	
 
 	return (
 		<div
