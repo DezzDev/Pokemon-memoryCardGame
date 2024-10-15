@@ -9,42 +9,45 @@ import Swal from "sweetalert2";
 import "./App.css";
 import CardPokemon from "./components/cardPokemon/CardPokemon";
 import Loading from "./components/loading/Loading";
+
 import Settings from "./components/settings/Settings";
 import Marcador from "./components/marcador/Marcador";
+
 
 
 function App() {
   const url = "https://pokeapi.co/api/v2/pokemon";
 
-  // array to store pokemons data
-  const [pokemons, setPokemons] = useState<PokemonMin[] | null>(null);
-  //game turns
-  const [turns, setTurns] = useState(0);
-  // states to store the cards choices
-  const [choiceOne, setChoiceOne] = useState<PokemonMin | null>(null);
-  const [choiceTwo, setChoiceTwo] = useState<PokemonMin | null>(null);
-  // to disabled clicked card 
-  const [disabled, setDisabled] = useState(false);
-  // to know when the game is finished
-  const [gameEnd, setGameEnd] = useState(false);
-  // state to loading
-  const [loading, setLoading] = useState(false);
-  // state to know how many pokemons we want
-  const [pkmCount, setPkmCount] = useState<number>(3);
-  // state to know selected card manually
-  const [cardsManually, setCardsManually] = useState<PokemonName[]>([]);
-  // to know if fetch is randomly or manually
-  const [manually, setManually] = useState(false);
-  // to set the width of cards container
-  const [width, setWidth] = useState("");
-  // player points
-  const [player1Points, setPlayer1Points] = useState(0);
-  const [player2Points, setPlayer2Points] = useState(0);
-  // to know player turn
-  const [player1, setPlayer1] = useState(false);
-  const [player2, setPlayer2] = useState(false);
-  // to know if are two players
-  const [twoPlayers, setTwoPlayers] = useState(false);
+	// array to store pokemons data
+	const [pokemons, setPokemons] = useState<PokemonMin[] | null>(null);
+	//game turns
+	const [turns, setTurns] = useState(0);
+	// states to store the cards choices
+	const [choiceOne, setChoiceOne] = useState<PokemonMin | null>(null);
+	const [choiceTwo, setChoiceTwo] = useState<PokemonMin | null>(null);
+	// to disabled clicked card 
+	const [disabled, setDisabled] = useState(false);
+	// to know when the game is finished
+	const [gameEnd, setGameEnd] = useState(false);
+	// state to loading
+	const [loading, setLoading] = useState(false);
+
+	// state to know how many pokemons we want
+	const [pkmCount, setPkmCount] = useState<number>(3);
+	// state to know selected card manually
+	const [cardsManually, setCardsManually] = useState<PokemonName[]>([]);
+	// to know if fetch is randomly or manually
+	const [manually, setManually] = useState(false);
+	// to set the width of cards container
+	const [width, setWidth] = useState("");
+	// player points
+	const [player1Points, setPlayer1Points] = useState(0);
+	const [player2Points, setPlayer2Points] = useState(0);
+	// to know player turn
+	const [player1, setPlayer1] = useState(false);
+	const [player2, setPlayer2] = useState(false);
+	// to know if are two players
+	const [twoPlayers, setTwoPlayers] = useState(false);
 
   // create confetti instance
   const jsConfetti = useMemo(() => new JSConfetti(), []);
@@ -52,16 +55,17 @@ function App() {
 
 
 
-  /**
-   * fetch, to get randomly Pokémon from pokeapi
-   * @param pkmsCount number of pokemons thats we want
-   * @returns Array with the number of Pokemon that have been specified
-   */
-  const fetchPokemonRandomly = async (pkmsCount: number) => {
-    try {
-      let pokemonData: Pokemon[] = [];
-      // function to generate as many random numbers as specified
-      const randomNums = generateRandomNum(1, 1025, pkmsCount);
+	/**
+	 * fetch, to get randomly Pokémon from pokeapi
+	 * @param pkmsCount number of pokemons thats we want
+	 * @returns Array with the number of Pokemon that have been specified
+	 */
+	const fetchPokemonRandomly = async (pkmsCount: number) => {
+		try {
+			let pokemonData: Pokemon[] = [];
+			// function to generate as many random numbers as specified
+			const randomNums = generateRandomNum(1, 1025, pkmsCount);
+
 
       for (let i = 0; i < randomNums.length; i++) {
         const response = await fetch(`${url}/${randomNums[i]}`);
@@ -117,12 +121,13 @@ function App() {
     }
   };
 
-  /**
-   * function to duplicate the Pokémon and sort it randomly
-   * @param data Array with Pokémon
-   */
-  // shuffle cards
-  const shuffleCards = (data: Pokemon[]) => {
+	/**
+	 * function to duplicate the Pokémon and sort it randomly
+	 * @param data Array with Pokémon
+
+	 */
+	// shuffle cards
+	const shuffleCards = (data: Pokemon[]) => {
 
     const dataMin: PokemonMin[] = data.map((item) => {
       return {
@@ -160,17 +165,18 @@ function App() {
     setTurns(0);
   };
 
-  /**
-   * set width of board
-   * @param pkmNumber numbers of pkms
-   * @returns 
-   */
-  const setWidthClass = (pkmNumber: number) => {
-    // set the width of board
-    if (pkmNumber === 3) {
-      setWidth("width-3-cards");
-      return;
-    }
+	/**
+
+	 * set width of board
+	 * @param pkmNumber numbers of pkms
+	 * @returns 
+	 */
+	const setWidthClass = (pkmNumber: number) => {
+		// set the width of board
+		if (pkmNumber === 3) {
+			setWidth("width-3-cards");
+			return;
+		}
 
     if (pkmNumber === 4) {
       setWidth("width-4-cards");
@@ -278,20 +284,21 @@ function App() {
 
   };
 
-  /**
-     * get the cards when click over there 
-     * @param card data Pokémon
-     */
-  const handleChoice = (card: PokemonMin) => {
-    if (choiceOne) {
-      if (choiceOne === card) {
-        setChoiceTwo(null);
-      } else {
-        setChoiceTwo(card);
-      }
-    } else {
-      setChoiceOne(card);
-    }
+	/**
+		 * get the cards when click over there 
+		 * @param card data Pokémon
+		 */
+
+	const handleChoice = (card: PokemonMin) => {
+		if (choiceOne) {
+			if (choiceOne === card) {
+				setChoiceTwo(null);
+			} else {
+				setChoiceTwo(card);
+			}
+		} else {
+			setChoiceOne(card);
+		}
 
     // choiceOne ?
     // 	choiceOne === card ? 
@@ -300,16 +307,17 @@ function App() {
     // 	setChoiceOne(card);
   };
 
-  /**
-     * reset choices and add one turn
-     */
-  const resetTurn = () => {
-    setChoiceOne(null);
-    setChoiceTwo(null);
-    setTurns(prevTurns => prevTurns + 1);
-    setDisabled(false);
-  };
+	/**
+		 * reset choices and add one turn
+		 */
 
+	const resetTurn = () => {
+		setChoiceOne(null);
+		setChoiceTwo(null);
+		setTurns(prevTurns => prevTurns + 1);
+		setDisabled(false);
+	};
+	
 
   /**
     * compare 2 selected Pokémon
@@ -317,29 +325,33 @@ function App() {
   useEffect(() => {
 
 
-    // if choiceOne and choiceTwo have a value
-    if (choiceOne && choiceTwo) {
+		// if choiceOne and choiceTwo have a value
+		if (choiceOne && choiceTwo) {
+
 
       //disabled
       setDisabled(true);
       // if there are equal
       if (choiceOne.id === choiceTwo.id) {
 
-        // update the state
-        setPokemons(prevPokemons => {
-          if (!prevPokemons) {
-            return null;
-          } else {
-            return prevPokemons.map(pokemon => {
-              if (pokemon.id === choiceOne.id) {
-                // update propertied matched to true
-                return { ...pokemon, matched: true };
-              } else {
-                return pokemon;
-              }
-            });
-          }
-        });
+				// update the state
+				setPokemons(prevPokemons => {
+					if (!prevPokemons) {
+						return null;
+					} else {
+						return prevPokemons.map(pokemon => {
+							if (pokemon.id === choiceOne.id) {
+
+								// update propertied matched to true
+
+								return { ...pokemon, matched: true };
+							} else {
+								return pokemon;
+							}
+						});
+					}
+				});
+
 
         // add point to player in turn
         if (player1) {
@@ -349,12 +361,13 @@ function App() {
           setPlayer2Points(prev => prev + 1);
         }
 
-      } else {
-        // change turn
-        console.log("cambiamos el turno");
-        setPlayer1(prev => !prev);
-        setPlayer2(prev => !prev);
-      }
+			} else {
+				// change turn
+				console.log("cambiamos el turno");
+				setPlayer1(prev => !prev);
+				setPlayer2(prev => !prev);
+
+			}
 
       setTimeout(() => {
         resetTurn();
@@ -363,10 +376,11 @@ function App() {
     }
   }, [choiceOne, choiceTwo]);
 
-  /**
-     * to check if all cards are matched
-     */
-  useEffect(() => {
+	/**
+
+		 * to check if all cards are matched
+		 */
+	useEffect(() => {
 
     if (pokemons === null) return;
     // check if all pokemons are matched and setGameEnd
@@ -482,28 +496,30 @@ function App() {
         loading
           ? <Loading />
 
-          // if don't have pokemons , don't show nothing
-          : pokemons &&
-          <div className={`card-container ${width}`}>
-            {
-              pokemons.map((pokemon, index) => {
-                return (
-                  <CardPokemon
-                    key={index}
-                    pokemon={pokemon}
-                    handleChoice={handleChoice}
-                    flipped={
-                      pokemon === choiceOne ||
-                      pokemon === choiceTwo ||
-                      pokemon.matched
-                    }
-                    disabled={disabled}
-                  />
-                );
-              })
-            }
-          </div>
-      }
+					// if don't have pokemons , don't show nothing
+					: pokemons &&
+					<div className={`card-container ${width}`}>
+						{
+
+							pokemons.map((pokemon, index) => {
+								return (
+									<CardPokemon
+										key={index}
+										pokemon={pokemon}
+										handleChoice={handleChoice}
+										flipped={
+											pokemon === choiceOne ||
+											pokemon === choiceTwo ||
+											pokemon.matched
+
+										}
+										disabled={disabled}
+									/>
+								);
+							})
+						}
+					</div>
+			}
 
       <Settings
         setPkmCount={setPkmCount}
@@ -513,6 +529,7 @@ function App() {
         setManually={setManually}
         setTwoPlayers={setTwoPlayers}
       />
+
 
 
     </div>
