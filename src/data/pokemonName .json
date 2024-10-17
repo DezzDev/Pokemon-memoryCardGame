@@ -1,0 +1,109 @@
+{
+	"Pokemon": [
+		{
+			"name": "bulbasaur",
+			"id": 1,
+			"img": "https://res.cloudinary.com/dezzdev/image/upload/t_auto-improve/v1729159286/1_ltfxpu.png"
+		},
+		{
+			"name": "ivysaur",
+			"id": 2,
+			"img": "https://res.cloudinary.com/dezzdev/image/upload/t_auto-improve/v1729159286/2_fjpuxs.png"
+		},
+		{
+			"name": "venusaur",
+			"id": 3,
+			"img": "https://res.cloudinary.com/dezzdev/image/upload/t_auto-improve/v1729159286/3_zaqo4z.png"
+		},
+		{
+			"name": "charmander",
+			"id": 4,
+			"img": "https://res.cloudinary.com/dezzdev/image/upload/t_auto-improve/v1729159286/4_o9o18c.png"
+		},
+		{
+			"name": "charmeleon",
+			"id": 5,
+			"img": "https://res.cloudinary.com/dezzdev/image/upload/t_auto-improve/v1729159286/5_va0ua6.png"
+		},
+		{
+			"name": "charizard",
+			"id": 6,
+			"img": "https://res.cloudinary.com/dezzdev/image/upload/t_auto-improve/v1729159286/6_hcfpo4.png"
+		},
+		{
+			"name": "squirtle",
+			"id": 7,
+			"img": "https://res.cloudinary.com/dezzdev/image/upload/t_auto-improve/v1729159286/7_vznual.png"
+		},
+		{
+			"name": "wartortle",
+			"id": 8,
+			"img": "https://res.cloudinary.com/dezzdev/image/upload/t_auto-improve/v1729159287/8_jxc4hd.png"
+		},
+		{
+			"name": "blastoise",
+			"id": 9,
+			"img": "https://res.cloudinary.com/dezzdev/image/upload/t_auto-improve/v1729159287/9_fhkeyl.png"
+		},
+		{
+			"name": "caterpie",
+			"id": 10,
+			"img": "https://res.cloudinary.com/dezzdev/image/upload/v1729159287/10_b9rt9c.png"
+		},
+		{
+			"name": "metapod",
+			"id": 11,
+			"img": "https://res.cloudinary.com/dezzdev/image/upload/t_auto-improve/v1729159286/11_mg3bwj.png"
+		},
+		{
+			"name": "butterfree",
+			"id": 12,
+			"img": "https://res.cloudinary.com/dezzdev/image/upload/t_auto-improve/v1729159287/12_ox2vcv.png"
+		},
+		{
+			"name": "weedle",
+			"id": 13,
+			"img": "https://res.cloudinary.com/dezzdev/image/upload/t_auto-improve/v1729159287/13_t80t2f.png"
+		},
+		{
+			"name": "kakuna",
+			"id": 14,
+			"img": "https://res.cloudinary.com/dezzdev/image/upload/t_auto-improve/v1729159287/14_xoumtz.png"
+		},
+		{
+			"name": "beedrill",
+			"id": 15,
+			"img": "https://res.cloudinary.com/dezzdev/image/upload/t_auto-improve/v1729159287/15_nvxsi1.png"
+		},
+		{
+			"name": "pidgey",
+			"id": 16,
+			"img": "https://res.cloudinary.com/dezzdev/image/upload/t_auto-improve/v1729159288/16_niy4yh.png"
+		},
+		{
+			"name": "pidgeotto",
+			"id": 17,
+			"img": "https://res.cloudinary.com/dezzdev/image/upload/t_auto-improve/v1729159290/17_g0wjnl.png"
+		},
+		{
+			"name": "pidgeot",
+			"id": 18,
+			"img": "https://res.cloudinary.com/dezzdev/image/upload/v1729159290/18_m0dwa2.png"
+		},
+		{
+			"name": "pichu",
+			"id": 172,
+			"img": "https://res.cloudinary.com/dezzdev/image/upload/t_auto-improve/v1729160249/172_ix4opu.png"
+		},
+		{
+			"name": "pikachu",
+			"id": 25,
+			"img": "https://res.cloudinary.com/dezzdev/image/upload/t_auto-improve/v1729160248/25_hwohkx.png"
+		},
+		{
+			"name": "raichu",
+			"id": 26,
+			"img": "https://res.cloudinary.com/dezzdev/image/upload/t_auto-improve/v1729160248/26_z5pdjc.png"
+		}
+	]
+}

@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from "react";
-import pokemonsNames from "../../pokemonsNames.json";
+import pokemonsNames from "../../data/pokemonsNames.json";
 import "./Settings.css";
 import { PokemonName, PokemonNames } from "../../types/Pokemon";
 import Swal from "sweetalert2";
