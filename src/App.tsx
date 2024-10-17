@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { Pokemon, PokemonMin, PokemonName } from "./types/Pokemon";
 import { generateRandomNum } from "./utils/generateRandom";
+import dataPokemon from "./data/pokemonName .json";
 
 //components
 import CardPokemon from "./components/cardPokemon/CardPokemon";
@@ -61,7 +62,7 @@ function App() {
 	// Cloudinary instance
 	const cld = new Cloudinary({
 		cloud: {
-			cloudName : "dezzdev"
+			cloudName: "dezzdev"
 		}
 	});
 
@@ -75,39 +76,39 @@ function App() {
 	 * @param pkmsCount number of pokemons thats we want
 	 * @returns Array with the number of Pokemon that have been specified
 	 */
-	const fetchPokemonRandomly = async (pkmsCount: number) => {
-		try {
-			let pokemonData: Pokemon[] = [];
-			// function to generate as many random numbers as specified
-			const randomNums = generateRandomNum(1, 1025, pkmsCount);
+	const getPokemonRandomly = async (pkmsCount: number) => {
+
+		const pokemonData: PokemonMin[] = [];
+		// function to generate as many random numbers as specified
+		const randomNums = generateRandomNum(1, 21, pkmsCount);
 
 
-			for (let i = 0; i < randomNums.length; i++) {
-				const response = await fetch(`${url}/${randomNums[i]}`);
+		for (let i = 0; i < randomNums.length; i++) {
+			const randomNum = randomNums[i];
+			const pokemon = dataPokemon.Pokemon.find(pok => {
+				return pok.id === randomNum;
+			});
 
-				if (!response.ok) {
-					throw new Error("No se pudo obtener la información");
-				}
+			if (pokemon) {
+				pokemonData.push(pokemon);
 
-				const data = await response.json() as Pokemon;
-
-				pokemonData = [...pokemonData, data];
 			}
 
-			// return pokemons
-			return pokemonData;
-
-
-		} catch (error) {
-			console.error("Error al obtener datos:", error);
 		}
+
+
+		// return pokemons
+		return pokemonData;
+
+
 	};
 
+
 	/**
-   * fetch, to get manually Pokémon from pokeapi
-   * @param cards array of cards that we will find
-   * @returns Array with the number of Pokemon that have been specified
-   */
+	 * fetch, to get manually Pokémon from pokeapi
+	 * @param cards array of cards that we will find
+	 * @returns Array with the number of Pokemon that have been specified
+	 */
 	const fetchPokemonManually = async (cards: PokemonName[]) => {
 		try {
 			let pokemonData: Pokemon[] = [];
@@ -136,43 +137,58 @@ function App() {
 		}
 	};
 
+	const toPokemonMin = (data: Pokemon[])=>{
+		return data.map(item =>{
+			return {
+				id:item.id,
+				img: item.sprites.other?.["official-artwork"].front_default,
+				name: item.name,
+				matched: false
+			};
+		});
+	};
+
+	/**
+	 * sort randomly element 
+	 * @param array data to sort randomly
+	 */
+	const shuffleArray = (array: PokemonMin[]) => {
+		for (let i = array.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[array[i], array[j]] = [array[j], array[i]];
+		}
+	};
+
 	/**
 	 * function to duplicate the Pokémon and sort it randomly
 	 * @param data Array with Pokémon
 
 	 */
 	// shuffle cards
-	const shuffleCards = (data: Pokemon[]) => {
+	const shuffleCards = (data: Pokemon[] | PokemonMin[]) => {
 
-		const dataMin: PokemonMin[] = data.map((item) => {
-			return {
-				id: item.id,
-				img: item.sprites.other?.["official-artwork"].front_default,
-				name: item.name,
-				matched: false,
+		if (data.length > 6){
+			data = toPokemonMin(data)
+		}
+		// const dataMin: PokemonMin[] = data.map((item) => {
+		// 	return {
+		// 		id: item.id,
+		// 		img: item.sprites.other?.["official-artwork"].front_default,
+		// 		name: item.name,
+		// 		matched: false,
 
-			};
-		});
+		// 	};
+		// });
 
-		/**
-     * sort randomly element 
-     * @param array data to sort randomly
-     */
-		const shuffleArray = (array: PokemonMin[]) => {
-			for (let i = array.length - 1; i > 0; i--) {
-				const j = Math.floor(Math.random() * (i + 1));
-				[array[i], array[j]] = [array[j], array[i]];
-			}
-		};
 
-		// duplicate cards and add index param
-		const shuffleCards = [...dataMin, ...dataMin]
+		// duplicate cards and add index param to get final deck
+		const finalDeck = [...data, ...data]
 			.map((pokemon, index) => ({ ...pokemon, index: index }));
 
 		// sort randomly
-		shuffleArray(shuffleCards);
+		shuffleArray(finalDeck);
 		// set pokemons state
-		setPokemons(shuffleCards);
+		setPokemons(finalDeck);
 		// set choices to null
 		setChoiceOne(null);
 		setChoiceTwo(null);
@@ -216,11 +232,11 @@ function App() {
 	};
 
 	/**
-   * Get the numbers of Pokémon and set pkmsCount
-   * call fetchData to get Pokémon
-   * call shuffleCard to duplicate and sort randomly 
-   * @param e event of click
-   */
+	 * Get the numbers of Pokémon and set pkmsCount
+	 * call fetchData to get Pokémon
+	 * call shuffleCard to duplicate and sort randomly 
+	 * @param e event of click
+	 */
 	const newGame = () => {
 
 
@@ -332,11 +348,11 @@ function App() {
 		setTurns(prevTurns => prevTurns + 1);
 		setDisabled(false);
 	};
-	
+
 
 	/**
-    * compare 2 selected Pokémon
-    */
+		* compare 2 selected Pokémon
+		*/
 	useEffect(() => {
 
 
@@ -404,8 +420,8 @@ function App() {
 	}, [pokemons]);
 
 	/**
-   * to check if game is end
-   */
+	 * to check if game is end
+	 */
 	useEffect(() => {
 
 		const f = () => {

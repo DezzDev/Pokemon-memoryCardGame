@@ -92,17 +92,17 @@
 		},
 		{
 			"name": "pichu",
-			"id": 172,
+			"id": 19,
 			"img": "https://res.cloudinary.com/dezzdev/image/upload/t_auto-improve/v1729160249/172_ix4opu.png"
 		},
 		{
 			"name": "pikachu",
-			"id": 25,
+			"id": 20,
 			"img": "https://res.cloudinary.com/dezzdev/image/upload/t_auto-improve/v1729160248/25_hwohkx.png"
 		},
 		{
 			"name": "raichu",
-			"id": 26,
+			"id": 21,
 			"img": "https://res.cloudinary.com/dezzdev/image/upload/t_auto-improve/v1729160248/26_z5pdjc.png"
 		}
 	]
