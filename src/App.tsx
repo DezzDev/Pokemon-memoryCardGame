@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
-import { Pokemon, PokemonMin, PokemonName } from "./types/Pokemon";
+import { PokemonMin, PokemonName } from "./types/Pokemon";
 import { generateRandomNum } from "./utils/generateRandom";
 import dataPokemon from "./data/pokemonName.json";
 import { getPublicId } from "./utils/getPublicId";
@@ -15,9 +15,8 @@ import JSConfetti from "js-confetti";
 import Swal from "sweetalert2";
 
 // cloudinary
-import { AdvancedImage } from "@cloudinary/react";
 import { Cloudinary } from "@cloudinary/url-gen/index";
-import { transformationStringFromObject } from "@cloudinary/url-gen";
+
 
 import "./App.css";
 import { generativeBackgroundReplace } from "@cloudinary/url-gen/actions/effect";
@@ -60,6 +59,16 @@ function App() {
 	// to know if are two players
 	const [twoPlayers, setTwoPlayers] = useState(false);
 
+	//halloween
+	//const prompt = "Create a spooky Halloween-themed background at night The scene is set in a haunted forest with twisted bare trees and a large glowing full moon hanging in a cloudy sky Thick fog swirls around the ground covering an eerie path In the distance you can see glowing jack-o-lanterns casting a soft orange light on the surrounding area Cobwebs hang between the branches and shadows of bats fly across the moon Use a color palette of dark purples blacks and deep oranges to create a creepy yet mystical atmosphere The lighting should be dim and ominous highlighting the moon and pumpkins while leaving the rest of the scene in darkness";
+	// lapidas
+	//const prompt = "Create a dark and eerie Halloween background for Pokémon cards The scene takes place in a desolate graveyard under a pitch-black sky The moon is hidden behind thick storm clouds and lightning occasionally flashes illuminating creepy tombstones and twisted dead trees Shadows stretch across the ground and thick mist rises from the earth A dilapidated iron gate stands ajar with ghostly figures lurking in the distance Bats swarm overhead and crows perch on broken gravestones Use a color palette of black gray and dark red to create a terrifying and haunted atmosphere with flickering lights from distant lanterns barely illuminating the darkness";
+	// sangriento
+	//const prompt = "Create a dark and bloody background for a Pokémon scene The setting is a haunted abandoned mansion with walls covered in dripping blood Streaks of red run down cracked walls and bloody handprints are smeared across old wooden doors Pools of blood form on the floor reflecting the dim light from flickering candles Shadows dance along the walls and broken windows let in a cold eerie wind The air is thick with a sense of dread and the color palette consists of deep reds blacks and dark browns adding to the horrific and gory atmosphere Blood splatters cover various objects around the room giving a chaotic and violent feel";
+	// pelicula halloween
+	const prompt = "Create a fun and spooky Halloween-themed background for a Butterfree Pokémon card aimed at children The scene is set in a magical forest at night with glowing pumpkins and smiling jack-o'-lanterns scattered around The sky is filled with soft glowing stars and a friendly full moon Butterfree is surrounded by cute bats and floating ghost-like figures that are more playful than scary The color palette uses bright purples oranges and soft greens to create a magical yet spooky atmosphere suitable for kids The overall mood is spooky but fun with elements like cobwebs and candles giving a gentle Halloween vibe";
+
+
 	// create confetti instance
 	const jsConfetti = useMemo(() => new JSConfetti(), []);
 
@@ -70,10 +79,7 @@ function App() {
 		}
 	});
 
-	const myImage = cld.image("1_ltfxpu");
 
-	myImage.effect(generativeBackgroundReplace()
-		.prompt("trees"));
 
 
 	/**
@@ -126,7 +132,7 @@ function App() {
 				pok.id === cardSelected.id
 			));
 			if(pokemon){
-				pokemonData.push(pokemon);
+				pokemonData.push({ ...pokemon, matched: false });
 			}
 		}
 
@@ -141,16 +147,16 @@ function App() {
 	 * @param data array of Pokemon
 	 * @returns array of PokemonMin 
 	 */
-	const toPokemonMin = (data: Pokemon[]) => {
-		return data.map(item => {
-			return {
-				id: item.id,
-				img: item.sprites.other?.["official-artwork"].front_default,
-				name: item.name,
-				matched: false
-			};
-		});
-	};
+	// const toPokemonMin = (data: Pokemon[]) => {
+	// 	return data.map(item => {
+	// 		return {
+	// 			id: item.id,
+	// 			img: item.sprites.other?.["official-artwork"].front_default,
+	// 			name: item.name,
+	// 			matched: false
+	// 		};
+	// 	});
+	// };
 
 	/**
 	 * sort randomly element 
@@ -181,10 +187,7 @@ function App() {
 	 */
 	const prepareDeck = (data: PokemonMin[]) => {
 
-		// if have more of 6 properties is Pokemon[]
-		if (data.length > 6) {
-			data = toPokemonMin(data as Pokemon[]);
-		}
+	
 
 		// duplicate cards and add index param to get final deck
 		const duplicatedPokemon = duplicatePokemon(data);
@@ -228,6 +231,20 @@ function App() {
 			return;
 		}
 	};
+
+	const loadImages = (imageUrl : string[])=>{
+		const promises = imageUrl.map(url=>{
+			return new Promise<void>(resolve =>{
+				const img = new Image();
+				img.src = url;
+				img.onload = () => { resolve(); };
+				img.onerror = () => { resolve(); };
+			});
+		});
+		// Cuando todas las promesas se resuelvan, significa que todas las imágenes se han cargado
+		return Promise.all(promises);
+	};
+	
 
 	/**
 	 * Get the numbers of Pokémon and set pkmsCount
@@ -276,36 +293,85 @@ function App() {
 					return;
 				}
 	
-	
+				// get pokemon manually
 				const pokemonManually = getPokemonManually(cardsManually);
+
+				// through deck to change img
+				pokemonManually.forEach(pokemon => {
+
+					if(pokemon.img){
+						console.log({beforeUrl: pokemon.img});
+						const publicId = getPublicId(pokemon.img);
+					
+						const myImage = cld.image(publicId);
+
+						const url = myImage.effect(generativeBackgroundReplace()
+							.prompt(prompt)).toURL();
+						
+						console.log({publicId,url});
+						
+						pokemon.img = url;
+						
+
+					}
+				});
+
+				const imageUrls = pokemonManually.map(pokemon => pokemon.img);
+				if(typeof imageUrls === "undefined") return;
+				loadImages(imageUrls as string[])
+					.then(()=>{
+						setLoading(false);
+					})
+					.catch(e => { console.error(e);});
+
 				const deck = prepareDeck(pokemonManually);
 				setPokemons(deck);
-				setLoading(false);
+			
 					
 			} else {
 	
 				// get Pokemon randomly
 				const pokemonRandomly = getPokemonRandomly(pkmCount);
 
-				// through deck to change img
+				// // through deck to change img
 				pokemonRandomly.forEach(pokemon => {
-					if(!pokemon.img) return;
-					const publicId = getPublicId(pokemon.img);
-					console.log(publicId);
+
+					if(pokemon.img){
+						console.log({beforeUrl: pokemon.img});
+						const publicId = getPublicId(pokemon.img);
+						const myImage = cld.image(publicId);
+
+						const url = myImage.effect(generativeBackgroundReplace()
+							.prompt(prompt)).toURL();
+						
+						console.log({publicId,url});
+						pokemon.img = url;
+						
+
+					}
 				});
 
+				// to set loader false
+				const imageUrls = pokemonRandomly.map(pokemon => pokemon.img);
+				if(typeof imageUrls === "undefined") return;
+				loadImages(imageUrls as string[])
+					.then(()=>{
+						setLoading(false);
+					})
+					.catch(e => { console.error(e);});
+
 				const deck = prepareDeck(pokemonRandomly);
-
-
-
+				
 				setPokemons(deck);
-				// set loading false
-				setLoading(false);
+				
+				
 			}
 			
 		},2000);
 
 	};
+
+	
 
 	/**
 	 * get the cards when click over there 
@@ -326,10 +392,10 @@ function App() {
 	};
 
 	/**
-		 * reset choices and add one turn
+		 * reset choices and add one turn (next turn) 
 		 */
 
-	const resetChoice = () => {
+	const nextTurn = () => {
 		setChoiceOne(null);
 		setChoiceTwo(null);
 		setTurns(prevTurns => prevTurns + 1);
@@ -346,7 +412,7 @@ function App() {
 			setTimeout(() => {
 				// confetti
 				jsConfetti.addConfetti({
-					emojis: ["🌈", "⚡️", "💥", "✨", "💫", "🧟‍♂️", "🧟‍♀️"],
+					emojis: ["🎃", "💀", "👻", "🧛‍♂️", "🍬", "🧟‍♂️", "🦇"],
 	
 				})
 					.catch(e => { console.error("Error: ", e); });
@@ -415,8 +481,7 @@ function App() {
 		[],
 	);
 	
-
-
+	
 	/**
 		* compare 2 selected Pokémon
 		*/
@@ -468,7 +533,7 @@ function App() {
 			}
 
 			setTimeout(() => {
-				resetChoice();
+				nextTurn();
 
 			}, 1500);
 		}
@@ -550,7 +615,6 @@ function App() {
 					</div>
 			}
 
-			<AdvancedImage cldImg={myImage} />
 
 			<Settings
 				setPkmCount={setPkmCount}
