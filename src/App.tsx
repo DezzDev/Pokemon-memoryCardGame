@@ -65,9 +65,12 @@ function App() {
 	//const prompt = "Create a dark and eerie Halloween background for Pokémon cards The scene takes place in a desolate graveyard under a pitch-black sky The moon is hidden behind thick storm clouds and lightning occasionally flashes illuminating creepy tombstones and twisted dead trees Shadows stretch across the ground and thick mist rises from the earth A dilapidated iron gate stands ajar with ghostly figures lurking in the distance Bats swarm overhead and crows perch on broken gravestones Use a color palette of black gray and dark red to create a terrifying and haunted atmosphere with flickering lights from distant lanterns barely illuminating the darkness";
 	// sangriento
 	//const prompt = "Create a dark and bloody background for a Pokémon scene The setting is a haunted abandoned mansion with walls covered in dripping blood Streaks of red run down cracked walls and bloody handprints are smeared across old wooden doors Pools of blood form on the floor reflecting the dim light from flickering candles Shadows dance along the walls and broken windows let in a cold eerie wind The air is thick with a sense of dread and the color palette consists of deep reds blacks and dark browns adding to the horrific and gory atmosphere Blood splatters cover various objects around the room giving a chaotic and violent feel";
-	// pelicula halloween
-	const prompt = "Create a fun and spooky Halloween-themed background for a Butterfree Pokémon card aimed at children The scene is set in a magical forest at night with glowing pumpkins and smiling jack-o'-lanterns scattered around The sky is filled with soft glowing stars and a friendly full moon Butterfree is surrounded by cute bats and floating ghost-like figures that are more playful than scary The color palette uses bright purples oranges and soft greens to create a magical yet spooky atmosphere suitable for kids The overall mood is spooky but fun with elements like cobwebs and candles giving a gentle Halloween vibe";
-
+	// calabazas
+	// const prompt = "Create a fun and spooky Halloween-themed background for a Butterfree Pokémon card aimed at children The scene is set in a magical forest at night with glowing pumpkins and smiling jack-o'-lanterns scattered around The sky is filled with soft glowing stars and a friendly full moon Butterfree is surrounded by cute bats and floating ghost-like figures that are more playful than scary The color palette uses bright purples oranges and soft greens to create a magical yet spooky atmosphere suitable for kids The overall mood is spooky but fun with elements like cobwebs and candles giving a gentle Halloween vibe";
+	// fantasmas
+	//const prompt = "Create a fun and spooky Halloween-themed background for Pokémon cards aimed at children The scene is set in a misty forest at night with playful ghost-like figures floating around The ghosts are smiling and waving creating a friendly and not scary atmosphere The full moon shines brightly in the sky surrounded by twinkling stars The forest is decorated with glowing orbs and cobwebs hanging between the trees while cute bats fly overhead The color palette includes soft blues purples and whites to give a magical and spooky but gentle vibe perfect for kids The overall mood is playful and spooky with the friendly ghosts being the main focus";
+	// murcielagos
+	const prompt = "Create a dark and spooky Halloween-themed background for Pokémon cards aimed at children The scene is set in a shadowy forest at night with large bats flying overhead casting eerie shadows across the ground The sky is overcast with clouds partially covering a glowing full moon The trees are twisted and bare with dark branches reaching out like claws Thick fog rolls across the ground creating a mysterious and slightly creepy atmosphere The color palette uses deep purples blacks and dark blues with glowing accents from the moon and the eyes of the bats The overall mood is darker and more mysterious but still playful enough for children with the bats looking curious rather than scary";
 
 	// create confetti instance
 	const jsConfetti = useMemo(() => new JSConfetti(), []);
@@ -232,6 +235,11 @@ function App() {
 		}
 	};
 
+	/**
+	 * function to know if all urls are loaded
+	 * @param imageUrl array of image urls  
+	 * @returns promise 
+	 */
 	const loadImages = (imageUrl : string[])=>{
 		const promises = imageUrl.map(url=>{
 			return new Promise<void>(resolve =>{
