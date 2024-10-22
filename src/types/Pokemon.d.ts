@@ -1,17 +1,18 @@
 
 export type PokemonName = {
 	name: string,
-	id: number
+	id: number,
+	img: string
 }
 export type PokemonNames = {
-	pokemons: PokemonName[]
+	Pokemon: PokemonName[]
 }
 
 export type PokemonMin ={
 	id: number,
 	img?: string,
 	name: string,
-	matched: boolean,
+	matched?: boolean,
 	index?: number
 }
 

@@ -1,28 +1,42 @@
 /* card */
 
-.card{
+.card {
 	position: relative;
 	width: 200px;
 	height: 275px;
 	cursor: pointer;
 }
 
-.card img{
+.card img {
 	max-width: 100%;
 	max-height: 100%;
-	display: block;		
+	display: block;
 }
 
-.card-content{
+.card .front p {
+	margin: 0;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: darkorange;
+	border-top: solid 1px white;
+	text-align: center;
+	font-weight: 700;
+	font-size: x-large;
+}
+
+.card-content {
 	width: 100%;
 	height: 100%;
-	transition: transform cubic-bezier(.32,.23,.26,1.55) 1s;
+	transition: transform cubic-bezier(.32, .23, .26, 1.55) 1s;
 	transform-style: preserve-3d;
 	border: 2px solid #fff;
 	border-radius: 6px;
 }
 
-.front, .back{
+.front,
+.back {
 	backface-visibility: hidden;
 	top: 0;
 	position: absolute;
@@ -37,17 +51,14 @@
 	overflow: hidden;
 }
 
-.front p{
-	flex-grow: 1;
-}
 
-.flipped.card-content{
+.flipped.card-content {
 	transform: rotateY(180deg);
 }
 
 /* Shine effect */
 
-.front::before{
+.front::before {
 	content: "";
 	position: absolute;
 	background-color: rgba(255, 255, 255, 0.3);
@@ -57,42 +68,40 @@
 	left: -130px;
 }
 
-.flipped .front::before{
+.flipped .front::before {
 	animation: shine 1s;
 }
 
 @keyframes shine {
-	0%,100%{
+
+	0%,
+	100% {
 		left: -130px;
 	}
-	50%{
+
+	50% {
 		left: 100%;
 	}
 }
 
 /* Flash effect */
 
-.flash{
+.flash {
 	animation: flash cubic-bezier(1, 0, 0, 1) .7s .7s;
-	
+
 }
 
 @keyframes flash {
-	0%{
+	0% {
 		box-shadow: 0px 0px 0px 0px #fff;
 	}
 
-	50%{
+	50% {
 		background-color: rgba(255, 255, 255, 1);
 		box-shadow: 0px 0px 20px 4px #fff;
 	}
 
-	100%{
+	100% {
 		background-color: #606060;
 	}
 }
-
-
-
-
-

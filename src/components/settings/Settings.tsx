@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from "react";
-import pokemonsNames from "../../pokemonsNames.json";
+import jsonPokemonName from "../../data/pokemonName.json";
 import "./Settings.css";
 import { PokemonName, PokemonNames } from "../../types/Pokemon";
 import Swal from "sweetalert2";
@@ -15,7 +15,8 @@ type Props = {
 	setTwoPlayers: (twoPlayers: boolean)=> void
 }
 
-const dataPokemonNames: PokemonNames = pokemonsNames;
+
+const dataPokemonNames: PokemonNames = jsonPokemonName;
 
 export default function Settings({ setTwoPlayers, setPkmCount, pkmCount, setCardsManually, manually, setManually }: Props) {
 
@@ -80,8 +81,8 @@ export default function Settings({ setTwoPlayers, setPkmCount, pkmCount, setCard
 		}
 
 		// filter names that included searchValue
-		const suggestions = dataPokemonNames.pokemons.filter(pokemon => pokemon.name.toLowerCase().includes(value.toLowerCase()));
-
+		const suggestions = dataPokemonNames.Pokemon.filter(pokemon => pokemon.name.toLowerCase().includes(value.toLowerCase()));
+		console.log({suggestions});
 		setSuggestions(suggestions);
 	};
 
@@ -120,7 +121,7 @@ export default function Settings({ setTwoPlayers, setPkmCount, pkmCount, setCard
 		}
 
 		// check searchValue is a valid pokemon name
-		const some: boolean = dataPokemonNames.pokemons.some((pokemon: PokemonName) => {
+		const some: boolean = dataPokemonNames.Pokemon.some((pokemon: PokemonName) => {
 			return pokemon.name === searchValue.toLowerCase();
 		});
 
@@ -171,7 +172,7 @@ export default function Settings({ setTwoPlayers, setPkmCount, pkmCount, setCard
 		// add valueSearch to tags state
 		setTags(prev => {
 
-			const pokemonTag = dataPokemonNames.pokemons.find(pokemon => pokemon.name === searchValue);
+			const pokemonTag = dataPokemonNames.Pokemon.find(pokemon => pokemon.name === searchValue);
 
 			if (pokemonTag === undefined) return [];
 			setCardsManually([...prev, pokemonTag]);
