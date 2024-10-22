@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { PokemonMin, PokemonName } from "./types/Pokemon";
 import { generateRandomNum } from "./utils/generateRandom";
 import dataPokemon from "./data/pokemonName.json";
@@ -21,6 +21,7 @@ import { Cloudinary } from "@cloudinary/url-gen/index";
 import "./App.css";
 import { generativeBackgroundReplace } from "@cloudinary/url-gen/actions/effect";
 
+// chadcn ui
 
 import {
 	Select,
@@ -28,10 +29,18 @@ import {
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "@/components/ui/select"
-
-import { Button } from "@/components/ui/button"
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { TypographyH1 } from "./components/typography";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { BadgeInfo } from "lucide-react";
+
 
 
 
@@ -71,19 +80,9 @@ function App() {
 	const [player2, setPlayer2] = useState(false);
 	// to know if are two players
 	const [twoPlayers, setTwoPlayers] = useState(false);
+	const [prompt, setPrompt] = useState("Create a fun and spooky Halloween-themed background for a Butterfree Pokémon card aimed at children The scene is set in a magical forest at night with glowing pumpkins and smiling jack-o'-lanterns scattered around The sky is filled with soft glowing stars and a friendly full moon Butterfree is surrounded by cute bats and floating ghost-like figures that are more playful than scary The color palette uses bright purples oranges and soft greens to create a magical yet spooky atmosphere suitable for kids The overall mood is spooky but fun with elements like cobwebs and candles giving a gentle Halloween vibe");
+	const [custom, setCustom] = useState(false);
 
-	//halloween
-	//const prompt = "Create a spooky Halloween-themed background at night The scene is set in a haunted forest with twisted bare trees and a large glowing full moon hanging in a cloudy sky Thick fog swirls around the ground covering an eerie path In the distance you can see glowing jack-o-lanterns casting a soft orange light on the surrounding area Cobwebs hang between the branches and shadows of bats fly across the moon Use a color palette of dark purples blacks and deep oranges to create a creepy yet mystical atmosphere The lighting should be dim and ominous highlighting the moon and pumpkins while leaving the rest of the scene in darkness";
-	// lapidas
-	//const prompt = "Create a dark and eerie Halloween background for Pokémon cards The scene takes place in a desolate graveyard under a pitch-black sky The moon is hidden behind thick storm clouds and lightning occasionally flashes illuminating creepy tombstones and twisted dead trees Shadows stretch across the ground and thick mist rises from the earth A dilapidated iron gate stands ajar with ghostly figures lurking in the distance Bats swarm overhead and crows perch on broken gravestones Use a color palette of black gray and dark red to create a terrifying and haunted atmosphere with flickering lights from distant lanterns barely illuminating the darkness";
-	// sangriento
-	//const prompt = "Create a dark and bloody background for a Pokémon scene The setting is a haunted abandoned mansion with walls covered in dripping blood Streaks of red run down cracked walls and bloody handprints are smeared across old wooden doors Pools of blood form on the floor reflecting the dim light from flickering candles Shadows dance along the walls and broken windows let in a cold eerie wind The air is thick with a sense of dread and the color palette consists of deep reds blacks and dark browns adding to the horrific and gory atmosphere Blood splatters cover various objects around the room giving a chaotic and violent feel";
-	// calabazas
-	// const prompt = "Create a fun and spooky Halloween-themed background for a Butterfree Pokémon card aimed at children The scene is set in a magical forest at night with glowing pumpkins and smiling jack-o'-lanterns scattered around The sky is filled with soft glowing stars and a friendly full moon Butterfree is surrounded by cute bats and floating ghost-like figures that are more playful than scary The color palette uses bright purples oranges and soft greens to create a magical yet spooky atmosphere suitable for kids The overall mood is spooky but fun with elements like cobwebs and candles giving a gentle Halloween vibe";
-	// fantasmas
-	//const prompt = "Create a fun and spooky Halloween-themed background for Pokémon cards aimed at children The scene is set in a misty forest at night with playful ghost-like figures floating around The ghosts are smiling and waving creating a friendly and not scary atmosphere The full moon shines brightly in the sky surrounded by twinkling stars The forest is decorated with glowing orbs and cobwebs hanging between the trees while cute bats fly overhead The color palette includes soft blues purples and whites to give a magical and spooky but gentle vibe perfect for kids The overall mood is playful and spooky with the friendly ghosts being the main focus";
-	// murcielagos
-	const prompt = "Create a dark and spooky Halloween-themed background for Pokémon cards aimed at children The scene is set in a shadowy forest at night with large bats flying overhead casting eerie shadows across the ground The sky is overcast with clouds partially covering a glowing full moon The trees are twisted and bare with dark branches reaching out like claws Thick fog rolls across the ground creating a mysterious and slightly creepy atmosphere The color palette uses deep purples blacks and dark blues with glowing accents from the moon and the eyes of the bats The overall mood is darker and more mysterious but still playful enough for children with the bats looking curious rather than scary";
 
 	// create confetti instance
 	const jsConfetti = useMemo(() => new JSConfetti(), []);
@@ -293,100 +292,105 @@ function App() {
 		// resets turns
 		setTurns(0);
 
-		// set loading
-		setLoading(true);
 
-		// to see the loader
-		setTimeout(() => {
-			// if manually
-			if (manually) {
+		
+		// if manually
+		if (manually) {
 
-				// check how many tags are 
-				if (cardsManually.length !== pkmCount) {
-					Swal.fire({
-						title: "Error!",
-						text: `Debe seleccionar al menos: ${pkmCount} pokemons`,
-						icon: "error"
-					})
-						.catch(e => { console.error("Error: ", e); });
-					return;
-				}
-
-				// get pokemon manually
-				const pokemonManually = getPokemonManually(cardsManually);
-
-				// through deck to change img
-				pokemonManually.forEach(pokemon => {
-
-					if (pokemon.img) {
-						console.log({ beforeUrl: pokemon.img });
-						const publicId = getPublicId(pokemon.img);
-
-						const myImage = cld.image(publicId);
-
-						const url = myImage.effect(generativeBackgroundReplace()
-							.prompt(prompt)).toURL();
-
-						console.log({ publicId, url });
-
-						pokemon.img = url;
-
-
-					}
+			// check how many tags are 
+			if (cardsManually.length !== pkmCount) {
+				void Swal.fire({
+					title: "Error!",
+					text: `Debe seleccionar al menos: ${pkmCount} pokemons`,
+					icon: "error"
 				});
 
-				const imageUrls = pokemonManually.map(pokemon => pokemon.img);
-				if (typeof imageUrls === "undefined") return;
-				loadImages(imageUrls as string[])
-					.then(() => {
-						setLoading(false);
-					})
-					.catch(e => { console.error(e); });
-
-				const deck = prepareDeck(pokemonManually);
-				setPokemons(deck);
-
-
-			} else {
-
-				// get Pokemon randomly
-				const pokemonRandomly = getPokemonRandomly(pkmCount);
-
-				// // through deck to change img
-				pokemonRandomly.forEach(pokemon => {
-
-					if (pokemon.img) {
-						console.log({ beforeUrl: pokemon.img });
-						const publicId = getPublicId(pokemon.img);
-						const myImage = cld.image(publicId);
-
-						const url = myImage.effect(generativeBackgroundReplace()
-							.prompt(prompt)).toURL();
-
-						console.log({ publicId, url });
-						pokemon.img = url;
-
-
-					}
-				});
-
-				// to set loader false
-				const imageUrls = pokemonRandomly.map(pokemon => pokemon.img);
-				if (typeof imageUrls === "undefined") return;
-				loadImages(imageUrls as string[])
-					.then(() => {
-						setLoading(false);
-					})
-					.catch(e => { console.error(e); });
-
-				const deck = prepareDeck(pokemonRandomly);
-
-				setPokemons(deck);
-
-
+				return;
 			}
 
-		}, 2000);
+
+			// set loading
+			setLoading(true);
+
+			// get pokemon manually
+			const pokemonManually = getPokemonManually(cardsManually);
+
+			// through deck to change img
+			pokemonManually.forEach(pokemon => {
+
+				if (pokemon.img) {
+					console.log({ beforeUrl: pokemon.img });
+					const publicId = getPublicId(pokemon.img);
+
+					const myImage = cld.image(publicId);
+
+					const url = myImage.effect(generativeBackgroundReplace()
+						.prompt(prompt)).toURL();
+
+					console.log({ publicId, url });
+
+					pokemon.img = url;
+
+
+				}
+			});
+
+			const imageUrls = pokemonManually.map(pokemon => pokemon.img);
+			if (typeof imageUrls === "undefined") return;
+			loadImages(imageUrls as string[])
+				.then(() => {
+					setLoading(false);
+				})
+				.catch(e => { console.error(e); });
+
+			const deck = prepareDeck(pokemonManually);
+			setPokemons(deck);
+
+
+		} else {
+
+
+			// set loading
+			setLoading(true);
+
+			// get Pokemon randomly
+			const pokemonRandomly = getPokemonRandomly(pkmCount);
+
+			// // through deck to change img
+			pokemonRandomly.forEach(pokemon => {
+
+				if (pokemon.img) {
+					console.log({ beforeUrl: pokemon.img });
+					const publicId = getPublicId(pokemon.img);
+					const myImage = cld.image(publicId);
+
+					const url = myImage.effect(generativeBackgroundReplace()
+						.prompt(prompt)).toURL();
+
+					console.log({ publicId, url });
+					pokemon.img = url;
+
+
+				}
+			});
+
+			// to set loader false
+			const imageUrls = pokemonRandomly.map(pokemon => pokemon.img);
+			if (typeof imageUrls === "undefined") return;
+			loadImages(imageUrls as string[])
+				.then(() => {
+					setLoading(false);
+				})
+				.catch(e => { console.error(e); });
+
+			const deck = prepareDeck(pokemonRandomly);
+
+			setPokemons(deck);
+
+
+		}
+
+		
 
 	};
 
@@ -587,84 +591,147 @@ function App() {
 
 	}, [gameEnd]);
 
+	const handleChange = (value: string) => {
+		if (!value) return;
+		if (value === "Custom") {
+			setCustom(true);
+		} else {
+			setCustom(false);
+			setPrompt(value);
+		}
+
+	};
+
+	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		console.log(e);
+		const formData = new FormData(e.currentTarget);
+		const promptValue = formData.get("prompt")?.toString();
+
+		if (promptValue) {
+
+			setPrompt(promptValue);
+
+			void Swal.fire({
+				title: "Prompt set",
+				icon: "success"
+			});
+
+		}
+
+	};
+
+
 
 	return (
 		<div className='ml-auto mr-auto pt-10 pl-5 pr-5 max-w-[1690px]'>
 
-			<TypographyH1 style="text-center mb-10">
-				POKEMON MEMORY GAME
-			</TypographyH1>
 
-			<Marcador
-				player1={player1}
-				player2={player2}
-				player1Points={player1Points}
-				player2Points={player2Points}
-				turns={turns}
-				twoPlayers={twoPlayers}
-			/>
+			<div className="flex flex-col justify-center items-center">
+				<TypographyH1 style="text-center mb-10">
+					POKEMON MEMORY GAME
+				</TypographyH1>
 
-			<div className="flex  justify-center">
-				<Button variant="outline" className="" onClick={newGame}>New Game</Button>
-			</div>
+				<Marcador
+					player1={player1}
+					player2={player2}
+					player1Points={player1Points}
+					player2Points={player2Points}
+					turns={turns}
+					twoPlayers={twoPlayers}
+				/>
 
-			<div className="flex justify-end">
-				<Select>
-					<SelectTrigger className="w-[180px]">
-						<SelectValue placeholder="Theme" />
-					</SelectTrigger>
-					<SelectContent>
-						<SelectItem value="light">Light</SelectItem>
-						<SelectItem value="dark">Dark</SelectItem>
-						<SelectItem value="system">System</SelectItem>
-					</SelectContent>
-				</Select>
+				<div className="flex justify-center gap-x-5 my-6">
 
-			</div>
+					<Button variant="secondary" className="" onClick={newGame}>New Game</Button>
 
+					<div className="flex gap-2">
+						<Select onValueChange={(value) => { handleChange(value); }}>
+							<SelectTrigger className="w-[180px]">
+								<SelectValue placeholder="Calabazas" />
+							</SelectTrigger>
+							<SelectContent>
+								<SelectItem value="Create a fun and spooky Halloween-themed background for a Butterfree Pokémon card aimed at children The scene is set in a magical forest at night with glowing pumpkins and smiling jack-o'-lanterns scattered around The sky is filled with soft glowing stars and a friendly full moon Butterfree is surrounded by cute bats and floating ghost-like figures that are more playful than scary The color palette uses bright purples oranges and soft greens to create a magical yet spooky atmosphere suitable for kids The overall mood is spooky but fun with elements like cobwebs and candles giving a gentle Halloween vibe">Calabazas</SelectItem>
+								<SelectItem value="Create a fun and spooky Halloween-themed background for Pokémon cards aimed at children The scene is set in a misty forest at night with playful ghost-like figures floating around The ghosts are smiling and waving creating a friendly and not scary atmosphere The full moon shines brightly in the sky surrounded by twinkling stars The forest is decorated with glowing orbs and cobwebs hanging between the trees The color palette includes soft blues purples and whites to give a magical and spooky but gentle vibe perfect for kids The overall mood is playful and spooky with the friendly ghosts being the main focus">Fantasmas</SelectItem>
+								<SelectItem value="Create a dark and spooky Halloween-themed background for Pokémon cards aimed at children The scene is set in a shadowy forest at night with large bats flying overhead casting eerie shadows across the ground The sky is overcast with clouds partially covering a glowing full moon The trees are twisted and bare with dark branches reaching out like claws Thick fog rolls across the ground creating a mysterious and slightly creepy atmosphere The color palette uses deep purples blacks and dark blues with glowing accents from the moon and the eyes of the bats The overall mood is darker and more mysterious but still playful enough for children with the bats looking curious rather than scary">Murciélagos</SelectItem>
+								<SelectItem value="Custom">Custom</SelectItem>
+							</SelectContent>
+						</Select>
 
+						
 
+						<TooltipProvider>
+							<Tooltip>
+								<TooltipTrigger asChild>
+									<Button variant="outline" size="icon" className="rounded-full">
+										<BadgeInfo />
+									</Button>
+								</TooltipTrigger>
+								<TooltipContent>
+									<p>Change the background of card with prompts</p>
+								</TooltipContent>
+							</Tooltip>
+						</TooltipProvider>
 
-			{
-				// if loading set true show loading, if set false show pokemons
-				loading
-					? <Loading />
-
-					// if don't have pokemons , don't show nothing
-					: pokemons &&
-					<div className={`flex flex-wrap gap-3 mt-10 mb-10 justify-center m-auto ${width}`}>
-						{/* cards container */}
-						{
-
-							pokemons.map((pokemon, index) => {
-								return (
-									<CardPokemon
-										key={index}
-										pokemon={pokemon}
-										handleChoice={handleChoice}
-										flipped={
-											pokemon === choiceOne ||
-											pokemon === choiceTwo ||
-											pokemon.matched
-
-										}
-										disabled={disabled}
-									/>
-								);
-							})
-						}
 					</div>
-			}
+
+				</div>
+
+				<div>
+					{custom &&
+						<form onSubmit={handleSubmit}>
+							<div className="flex w-full max-w-sm items-center space-x-2">
+								<Input name="prompt" type="text" placeholder="Write your prompt" />
+								<Button type="submit">Use Prompt</Button>
+							</div>
+
+						</form>
+					}
+
+				</div>
+
+				{
+					// if loading set true show loading, if set false show pokemons
+					loading
+						? <Loading />
+
+						// if don't have pokemons , don't show nothing
+						: pokemons &&
+						<div className={`flex flex-wrap gap-3 mt-10 mb-10 justify-center m-auto ${width}`}>
+							{/* cards container */}
+							{
+
+								pokemons.map((pokemon, index) => {
+									return (
+										<CardPokemon
+											key={index}
+											pokemon={pokemon}
+											handleChoice={handleChoice}
+											flipped={
+												pokemon === choiceOne ||
+												pokemon === choiceTwo ||
+												pokemon.matched
+
+											}
+											disabled={disabled}
+										/>
+									);
+								})
+							}
+						</div>
+				}
 
 
-			<Settings
-				setPkmCount={setPkmCount}
-				pkmCount={pkmCount}
-				setCardsManually={setCardsManually}
-				manually={manually}
-				setManually={setManually}
-				setTwoPlayers={setTwoPlayers}
-			/>
+				<Settings
+					setPkmCount={setPkmCount}
+					pkmCount={pkmCount}
+					setCardsManually={setCardsManually}
+					manually={manually}
+					setManually={setManually}
+					setTwoPlayers={setTwoPlayers}
+				/>
+			</div>
+
 
 
 

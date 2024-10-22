@@ -13,11 +13,17 @@
 	display: block;
 }
 
-.card p {
+.card .front p {
 	margin: 0;
-	padding-block: 24px;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	background-color: darkorange;
 	border-top: solid 1px white;
+	text-align: center;
+	font-weight: 700;
+	font-size: x-large;
 }
 
 .card-content {
