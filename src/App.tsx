@@ -22,6 +22,19 @@ import "./App.css";
 import { generativeBackgroundReplace } from "@cloudinary/url-gen/actions/effect";
 
 
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select"
+
+import { Button } from "@/components/ui/button"
+import { TypographyH1 } from "./components/typography";
+
+
+
 
 
 function App() {
@@ -107,9 +120,7 @@ function App() {
 				pokemonData.push({ ...pokemon, matched: false });
 
 			}
-
 		}
-
 
 		// return pokemons
 		return pokemonData;
@@ -123,8 +134,8 @@ function App() {
 	 * @param cards array of cards that we will find
 	 * @returns Array with the number of Pokemon that have been specified
 	 */
-	const getPokemonManually =  (cards: PokemonName[]) => {
-		
+	const getPokemonManually = (cards: PokemonName[]) => {
+
 		const pokemonData: PokemonMin[] = [];
 
 
@@ -134,7 +145,7 @@ function App() {
 			const pokemon = dataPokemon.Pokemon.find(pok => (
 				pok.id === cardSelected.id
 			));
-			if(pokemon){
+			if (pokemon) {
 				pokemonData.push({ ...pokemon, matched: false });
 			}
 		}
@@ -190,7 +201,7 @@ function App() {
 	 */
 	const prepareDeck = (data: PokemonMin[]) => {
 
-	
+
 
 		// duplicate cards and add index param to get final deck
 		const duplicatedPokemon = duplicatePokemon(data);
@@ -240,9 +251,9 @@ function App() {
 	 * @param imageUrl array of image urls  
 	 * @returns promise 
 	 */
-	const loadImages = (imageUrl : string[])=>{
-		const promises = imageUrl.map(url=>{
-			return new Promise<void>(resolve =>{
+	const loadImages = (imageUrl: string[]) => {
+		const promises = imageUrl.map(url => {
+			return new Promise<void>(resolve => {
 				const img = new Image();
 				img.src = url;
 				img.onload = () => { resolve(); };
@@ -252,7 +263,7 @@ function App() {
 		// Cuando todas las promesas se resuelvan, significa que todas las imágenes se han cargado
 		return Promise.all(promises);
 	};
-	
+
 
 	/**
 	 * Get the numbers of Pokémon and set pkmsCount
@@ -260,7 +271,7 @@ function App() {
 	 * call shuffleCard to duplicate and sort randomly 
 	 * @param e event of click
 	 */
-	const newGame =  () => {
+	const newGame = () => {
 
 
 		//set player1 to first
@@ -278,7 +289,7 @@ function App() {
 		// set choices to null
 		setChoiceOne(null);
 		setChoiceTwo(null);
-		
+
 		// resets turns
 		setTurns(0);
 
@@ -286,10 +297,10 @@ function App() {
 		setLoading(true);
 
 		// to see the loader
-		setTimeout(()=>{
+		setTimeout(() => {
 			// if manually
 			if (manually) {
-	
+
 				// check how many tags are 
 				if (cardsManually.length !== pkmCount) {
 					Swal.fire({
@@ -300,86 +311,86 @@ function App() {
 						.catch(e => { console.error("Error: ", e); });
 					return;
 				}
-	
+
 				// get pokemon manually
 				const pokemonManually = getPokemonManually(cardsManually);
 
 				// through deck to change img
 				pokemonManually.forEach(pokemon => {
 
-					if(pokemon.img){
-						console.log({beforeUrl: pokemon.img});
+					if (pokemon.img) {
+						console.log({ beforeUrl: pokemon.img });
 						const publicId = getPublicId(pokemon.img);
-					
+
 						const myImage = cld.image(publicId);
 
 						const url = myImage.effect(generativeBackgroundReplace()
 							.prompt(prompt)).toURL();
-						
-						console.log({publicId,url});
-						
+
+						console.log({ publicId, url });
+
 						pokemon.img = url;
-						
+
 
 					}
 				});
 
 				const imageUrls = pokemonManually.map(pokemon => pokemon.img);
-				if(typeof imageUrls === "undefined") return;
+				if (typeof imageUrls === "undefined") return;
 				loadImages(imageUrls as string[])
-					.then(()=>{
+					.then(() => {
 						setLoading(false);
 					})
-					.catch(e => { console.error(e);});
+					.catch(e => { console.error(e); });
 
 				const deck = prepareDeck(pokemonManually);
 				setPokemons(deck);
-			
-					
+
+
 			} else {
-	
+
 				// get Pokemon randomly
 				const pokemonRandomly = getPokemonRandomly(pkmCount);
 
 				// // through deck to change img
 				pokemonRandomly.forEach(pokemon => {
 
-					if(pokemon.img){
-						console.log({beforeUrl: pokemon.img});
+					if (pokemon.img) {
+						console.log({ beforeUrl: pokemon.img });
 						const publicId = getPublicId(pokemon.img);
 						const myImage = cld.image(publicId);
 
 						const url = myImage.effect(generativeBackgroundReplace()
 							.prompt(prompt)).toURL();
-						
-						console.log({publicId,url});
+
+						console.log({ publicId, url });
 						pokemon.img = url;
-						
+
 
 					}
 				});
 
 				// to set loader false
 				const imageUrls = pokemonRandomly.map(pokemon => pokemon.img);
-				if(typeof imageUrls === "undefined") return;
+				if (typeof imageUrls === "undefined") return;
 				loadImages(imageUrls as string[])
-					.then(()=>{
+					.then(() => {
 						setLoading(false);
 					})
-					.catch(e => { console.error(e);});
+					.catch(e => { console.error(e); });
 
 				const deck = prepareDeck(pokemonRandomly);
-				
+
 				setPokemons(deck);
-				
-				
+
+
 			}
-			
-		},2000);
+
+		}, 2000);
 
 	};
 
-	
+
 
 	/**
 	 * get the cards when click over there 
@@ -421,17 +432,17 @@ function App() {
 				// confetti
 				jsConfetti.addConfetti({
 					emojis: ["🎃", "💀", "👻", "🧛‍♂️", "🍬", "🧟‍♂️", "🦇"],
-	
+
 				})
 					.catch(e => { console.error("Error: ", e); });
-	
+
 				// select the winner
 				const winner = player1Points > player2Points ?
 					"player1"
 					: player2Points > player1Points ?
 						"player2"
 						: "empate";
-	
+
 				// if two players
 				if (twoPlayers) {
 					if (winner === "empate") {
@@ -447,7 +458,7 @@ function App() {
 								<path d="M816.5 383.8V259.3c0-11.2-9-20.2-20.2-20.2h-50.9v-41.7c0-11.2-9-20.2-20.2-20.2H300.9c-11.2 0-20.2 9-20.2 20.2v41.7h-50.9c-11.2 0-20.2 9-20.2 20.2v124.5c0 1.2-0.7 42.2 27.2 70.9 11.7 12 26.5 19.9 43.9 23.8v38.6c0 1.6 2.1 135.7 147.8 174.7l-21.8 72.7c-39 5.7-94.5 31.2-94.5 99.7 0 11.2 9 20.2 20.2 20.2H696c11.2 0 20.2-9 20.2-20.2 0-69.6-57.2-94.7-96.6-99.9l-20.4-72.9c144.1-39.6 146.2-172.7 146.2-174.3v-38.6c17.4-3.9 32.1-11.8 43.9-23.8 27.9-28.7 27.2-69.7 27.2-70.9z m-550.8 42.7c-16-16.4-15.8-41.9-15.8-42.1V279.6h30.7v156.7c-5.7-2.4-10.8-5.6-14.9-9.8z m338.2 377.1c0.1 0 0.1 0 0 0h2c6.2 0.2 54 3 66.8 40.4h-317c12.8-37.4 60.5-40.2 66.2-40.4h182z m-154.6-40.4l19.1-63.6c12.5 1.6 25.9 2.5 40.1 2.8 0.5 0 1.1 0.1 1.6 0.1h5.9c0.5 0 1.1 0 1.6-0.1 14.9-0.3 28.8-1.3 41.9-3l17.9 63.9H449.3zM705 517c-0.1 5.9-3.5 143.6-191.9 145-17.6-0.1-33.6-1.4-48.1-3.7-1.5-0.9-3-1.7-4.7-2.2-3.2-0.9-6.3-1-9.4-0.4-127.1-27.3-129.7-133.5-129.8-138.6V217.6H705V517z m55.3-90.5c-4.1 4.2-9.1 7.4-15 9.8V279.5H776v104.8c0.1 0.3 0.3 25.8-15.7 42.2z" fill="#211F1E" />
 								<path d="M446.7 449.5l-11.2 65.2c-1 5.7 1.4 11.4 6 14.8 4.7 3.4 10.8 3.8 16 1.1l58.5-30.8 58.5 30.8c2.2 1.2 4.6 1.7 7.1 1.7 3.1 0 6.3-1 8.9-2.9 4.7-3.4 7-9.1 6-14.8l-11.2-65.2 47.4-46.2c4.1-4 5.6-10.1 3.8-15.5-1.8-5.5-6.5-9.5-12.2-10.3L559 368l-29.3-59.3c-2.6-5.2-7.8-8.4-13.6-8.4s-11 3.3-13.6 8.4L473.2 368l-65.5 9.5c-5.7 0.8-10.4 4.8-12.2 10.3-1.8 5.5-0.3 11.5 3.8 15.5l47.4 46.2z m38.8-52.6c4.9-0.7 9.2-3.8 11.4-8.3l19.2-38.9 19.2 38.9c2.2 4.5 6.5 7.6 11.4 8.3l43 6.2-31.1 30.3c-3.6 3.5-5.2 8.5-4.4 13.4l7.3 42.8-38.4-20.2c-4.4-2.3-9.7-2.3-14.1 0l-38.4 20.2 7.3-42.8c0.8-4.9-0.8-9.9-4.4-13.4l-31.1-30.3 43.1-6.2z" fill="#211F1E" />
 							</svg>`
-						}).catch(e => {console.log(e);});
+						}).catch(e => { console.log(e); });
 					} else {
 						Swal.fire({
 							title: winner,
@@ -461,9 +472,9 @@ function App() {
 								<path d="M816.5 383.8V259.3c0-11.2-9-20.2-20.2-20.2h-50.9v-41.7c0-11.2-9-20.2-20.2-20.2H300.9c-11.2 0-20.2 9-20.2 20.2v41.7h-50.9c-11.2 0-20.2 9-20.2 20.2v124.5c0 1.2-0.7 42.2 27.2 70.9 11.7 12 26.5 19.9 43.9 23.8v38.6c0 1.6 2.1 135.7 147.8 174.7l-21.8 72.7c-39 5.7-94.5 31.2-94.5 99.7 0 11.2 9 20.2 20.2 20.2H696c11.2 0 20.2-9 20.2-20.2 0-69.6-57.2-94.7-96.6-99.9l-20.4-72.9c144.1-39.6 146.2-172.7 146.2-174.3v-38.6c17.4-3.9 32.1-11.8 43.9-23.8 27.9-28.7 27.2-69.7 27.2-70.9z m-550.8 42.7c-16-16.4-15.8-41.9-15.8-42.1V279.6h30.7v156.7c-5.7-2.4-10.8-5.6-14.9-9.8z m338.2 377.1c0.1 0 0.1 0 0 0h2c6.2 0.2 54 3 66.8 40.4h-317c12.8-37.4 60.5-40.2 66.2-40.4h182z m-154.6-40.4l19.1-63.6c12.5 1.6 25.9 2.5 40.1 2.8 0.5 0 1.1 0.1 1.6 0.1h5.9c0.5 0 1.1 0 1.6-0.1 14.9-0.3 28.8-1.3 41.9-3l17.9 63.9H449.3zM705 517c-0.1 5.9-3.5 143.6-191.9 145-17.6-0.1-33.6-1.4-48.1-3.7-1.5-0.9-3-1.7-4.7-2.2-3.2-0.9-6.3-1-9.4-0.4-127.1-27.3-129.7-133.5-129.8-138.6V217.6H705V517z m55.3-90.5c-4.1 4.2-9.1 7.4-15 9.8V279.5H776v104.8c0.1 0.3 0.3 25.8-15.7 42.2z" fill="#211F1E" />
 								<path d="M446.7 449.5l-11.2 65.2c-1 5.7 1.4 11.4 6 14.8 4.7 3.4 10.8 3.8 16 1.1l58.5-30.8 58.5 30.8c2.2 1.2 4.6 1.7 7.1 1.7 3.1 0 6.3-1 8.9-2.9 4.7-3.4 7-9.1 6-14.8l-11.2-65.2 47.4-46.2c4.1-4 5.6-10.1 3.8-15.5-1.8-5.5-6.5-9.5-12.2-10.3L559 368l-29.3-59.3c-2.6-5.2-7.8-8.4-13.6-8.4s-11 3.3-13.6 8.4L473.2 368l-65.5 9.5c-5.7 0.8-10.4 4.8-12.2 10.3-1.8 5.5-0.3 11.5 3.8 15.5l47.4 46.2z m38.8-52.6c4.9-0.7 9.2-3.8 11.4-8.3l19.2-38.9 19.2 38.9c2.2 4.5 6.5 7.6 11.4 8.3l43 6.2-31.1 30.3c-3.6 3.5-5.2 8.5-4.4 13.4l7.3 42.8-38.4-20.2c-4.4-2.3-9.7-2.3-14.1 0l-38.4 20.2 7.3-42.8c0.8-4.9-0.8-9.9-4.4-13.4l-31.1-30.3 43.1-6.2z" fill="#211F1E" />
 							</svg>`
-						}).catch(e => {console.log(e);});
+						}).catch(e => { console.log(e); });
 					}
-	
+
 					// if one player
 				} else {
 					Swal.fire({
@@ -477,19 +488,19 @@ function App() {
 								<path d="M816.5 383.8V259.3c0-11.2-9-20.2-20.2-20.2h-50.9v-41.7c0-11.2-9-20.2-20.2-20.2H300.9c-11.2 0-20.2 9-20.2 20.2v41.7h-50.9c-11.2 0-20.2 9-20.2 20.2v124.5c0 1.2-0.7 42.2 27.2 70.9 11.7 12 26.5 19.9 43.9 23.8v38.6c0 1.6 2.1 135.7 147.8 174.7l-21.8 72.7c-39 5.7-94.5 31.2-94.5 99.7 0 11.2 9 20.2 20.2 20.2H696c11.2 0 20.2-9 20.2-20.2 0-69.6-57.2-94.7-96.6-99.9l-20.4-72.9c144.1-39.6 146.2-172.7 146.2-174.3v-38.6c17.4-3.9 32.1-11.8 43.9-23.8 27.9-28.7 27.2-69.7 27.2-70.9z m-550.8 42.7c-16-16.4-15.8-41.9-15.8-42.1V279.6h30.7v156.7c-5.7-2.4-10.8-5.6-14.9-9.8z m338.2 377.1c0.1 0 0.1 0 0 0h2c6.2 0.2 54 3 66.8 40.4h-317c12.8-37.4 60.5-40.2 66.2-40.4h182z m-154.6-40.4l19.1-63.6c12.5 1.6 25.9 2.5 40.1 2.8 0.5 0 1.1 0.1 1.6 0.1h5.9c0.5 0 1.1 0 1.6-0.1 14.9-0.3 28.8-1.3 41.9-3l17.9 63.9H449.3zM705 517c-0.1 5.9-3.5 143.6-191.9 145-17.6-0.1-33.6-1.4-48.1-3.7-1.5-0.9-3-1.7-4.7-2.2-3.2-0.9-6.3-1-9.4-0.4-127.1-27.3-129.7-133.5-129.8-138.6V217.6H705V517z m55.3-90.5c-4.1 4.2-9.1 7.4-15 9.8V279.5H776v104.8c0.1 0.3 0.3 25.8-15.7 42.2z" fill="#211F1E" />
 								<path d="M446.7 449.5l-11.2 65.2c-1 5.7 1.4 11.4 6 14.8 4.7 3.4 10.8 3.8 16 1.1l58.5-30.8 58.5 30.8c2.2 1.2 4.6 1.7 7.1 1.7 3.1 0 6.3-1 8.9-2.9 4.7-3.4 7-9.1 6-14.8l-11.2-65.2 47.4-46.2c4.1-4 5.6-10.1 3.8-15.5-1.8-5.5-6.5-9.5-12.2-10.3L559 368l-29.3-59.3c-2.6-5.2-7.8-8.4-13.6-8.4s-11 3.3-13.6 8.4L473.2 368l-65.5 9.5c-5.7 0.8-10.4 4.8-12.2 10.3-1.8 5.5-0.3 11.5 3.8 15.5l47.4 46.2z m38.8-52.6c4.9-0.7 9.2-3.8 11.4-8.3l19.2-38.9 19.2 38.9c2.2 4.5 6.5 7.6 11.4 8.3l43 6.2-31.1 30.3c-3.6 3.5-5.2 8.5-4.4 13.4l7.3 42.8-38.4-20.2c-4.4-2.3-9.7-2.3-14.1 0l-38.4 20.2 7.3-42.8c0.8-4.9-0.8-9.9-4.4-13.4l-31.1-30.3 43.1-6.2z" fill="#211F1E" />
 							</svg>`
-					}).catch(e => {console.log(e);});
+					}).catch(e => { console.log(e); });
 				}
-	
-	
-	
+
+
+
 			}, 1000);
-	
+
 		}
 		,
 		[],
 	);
-	
-	
+
+
 	/**
 		* compare 2 selected Pokémon
 		*/
@@ -567,7 +578,7 @@ function App() {
 
 		// solo se ejecuta si gameEnd
 		if (gameEnd) {
-			
+
 			// execute function
 			confetti();
 
@@ -578,9 +589,11 @@ function App() {
 
 
 	return (
-		<div className='app'>
+		<div className='ml-auto mr-auto pt-10 pl-5 pr-5 max-w-[1690px]'>
 
-			<h1>Pokemon Memory Game</h1>
+			<TypographyH1 style="text-center mb-10">
+				POKEMON MEMORY GAME
+			</TypographyH1>
 
 			<Marcador
 				player1={player1}
@@ -591,7 +604,26 @@ function App() {
 				twoPlayers={twoPlayers}
 			/>
 
-			<button onClick={newGame}>New Game</button>
+			<div className="flex  justify-center">
+				<Button variant="outline" className="" onClick={newGame}>New Game</Button>
+			</div>
+
+			<div className="flex justify-end">
+				<Select>
+					<SelectTrigger className="w-[180px]">
+						<SelectValue placeholder="Theme" />
+					</SelectTrigger>
+					<SelectContent>
+						<SelectItem value="light">Light</SelectItem>
+						<SelectItem value="dark">Dark</SelectItem>
+						<SelectItem value="system">System</SelectItem>
+					</SelectContent>
+				</Select>
+
+			</div>
+
+
+
 
 			{
 				// if loading set true show loading, if set false show pokemons
@@ -600,7 +632,8 @@ function App() {
 
 					// if don't have pokemons , don't show nothing
 					: pokemons &&
-					<div className={`card-container ${width}`}>
+					<div className={`flex flex-wrap gap-3 mt-10 mb-10 justify-center m-auto ${width}`}>
+						{/* cards container */}
 						{
 
 							pokemons.map((pokemon, index) => {
