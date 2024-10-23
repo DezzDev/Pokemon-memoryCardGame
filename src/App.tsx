@@ -40,6 +40,7 @@ import {
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { BadgeInfo } from "lucide-react";
+import { SheetSide } from "./components/sheetSettings";
 
 
 
@@ -624,61 +625,63 @@ function App() {
 
 
 	return (
-		<div className='ml-auto mr-auto pt-10 pl-5 pr-5 max-w-[1690px]'>
+		<div className="relative">
+
+			<div className='ml-auto mr-auto pt-10 pl-5 pr-5 max-w-[1690px]'>
 
 
-			<div className="flex flex-col justify-center items-center">
-				<TypographyH1 style="text-center mb-10">
+				<div className="flex flex-col justify-center items-center">
+					<TypographyH1 style="text-center mb-10">
 					POKEMON MEMORY GAME
-				</TypographyH1>
+					</TypographyH1>
 
-				<Marcador
-					player1={player1}
-					player2={player2}
-					player1Points={player1Points}
-					player2Points={player2Points}
-					turns={turns}
-					twoPlayers={twoPlayers}
-				/>
+					<Marcador
+						player1={player1}
+						player2={player2}
+						player1Points={player1Points}
+						player2Points={player2Points}
+						turns={turns}
+						twoPlayers={twoPlayers}
+					/>
 
-				<div className="flex justify-center gap-x-5 my-6">
+					<div className="flex justify-center gap-x-5 my-6">
 
-					<Button variant="secondary" className="" onClick={newGame}>New Game</Button>
+						<Button variant="secondary" className="" onClick={newGame}>New Game</Button>
 
-					<div className="flex gap-2">
-						<Select onValueChange={(value) => { handleChange(value); }}>
-							<SelectTrigger className="w-[180px]">
-								<SelectValue placeholder="Calabazas" />
-							</SelectTrigger>
-							<SelectContent>
-								<SelectItem value="Create a fun and spooky Halloween-themed background for a Butterfree Pokémon card aimed at children The scene is set in a magical forest at night with glowing pumpkins and smiling jack-o'-lanterns scattered around The sky is filled with soft glowing stars and a friendly full moon Butterfree is surrounded by cute bats and floating ghost-like figures that are more playful than scary The color palette uses bright purples oranges and soft greens to create a magical yet spooky atmosphere suitable for kids The overall mood is spooky but fun with elements like cobwebs and candles giving a gentle Halloween vibe">Calabazas</SelectItem>
-								<SelectItem value="Create a fun and spooky Halloween-themed background for Pokémon cards aimed at children The scene is set in a misty forest at night with playful ghost-like figures floating around The ghosts are smiling and waving creating a friendly and not scary atmosphere The full moon shines brightly in the sky surrounded by twinkling stars The forest is decorated with glowing orbs and cobwebs hanging between the trees The color palette includes soft blues purples and whites to give a magical and spooky but gentle vibe perfect for kids The overall mood is playful and spooky with the friendly ghosts being the main focus">Fantasmas</SelectItem>
-								<SelectItem value="Create a dark and spooky Halloween-themed background for Pokémon cards aimed at children The scene is set in a shadowy forest at night with large bats flying overhead casting eerie shadows across the ground The sky is overcast with clouds partially covering a glowing full moon The trees are twisted and bare with dark branches reaching out like claws Thick fog rolls across the ground creating a mysterious and slightly creepy atmosphere The color palette uses deep purples blacks and dark blues with glowing accents from the moon and the eyes of the bats The overall mood is darker and more mysterious but still playful enough for children with the bats looking curious rather than scary">Murciélagos</SelectItem>
-								<SelectItem value="Custom">Custom</SelectItem>
-							</SelectContent>
-						</Select>
+						<div className="flex gap-2">
+							<Select onValueChange={(value) => { handleChange(value); }}>
+								<SelectTrigger className="w-[180px]">
+									<SelectValue placeholder="Calabazas" />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectItem value="Create a fun and spooky Halloween-themed background for a Butterfree Pokémon card aimed at children The scene is set in a magical forest at night with glowing pumpkins and smiling jack-o'-lanterns scattered around The sky is filled with soft glowing stars and a friendly full moon Butterfree is surrounded by cute bats and floating ghost-like figures that are more playful than scary The color palette uses bright purples oranges and soft greens to create a magical yet spooky atmosphere suitable for kids The overall mood is spooky but fun with elements like cobwebs and candles giving a gentle Halloween vibe">Calabazas</SelectItem>
+									<SelectItem value="Create a fun and spooky Halloween-themed background for Pokémon cards aimed at children The scene is set in a misty forest at night with playful ghost-like figures floating around The ghosts are smiling and waving creating a friendly and not scary atmosphere The full moon shines brightly in the sky surrounded by twinkling stars The forest is decorated with glowing orbs and cobwebs hanging between the trees The color palette includes soft blues purples and whites to give a magical and spooky but gentle vibe perfect for kids The overall mood is playful and spooky with the friendly ghosts being the main focus">Fantasmas</SelectItem>
+									<SelectItem value="Create a dark and spooky Halloween-themed background for Pokémon cards aimed at children The scene is set in a shadowy forest at night with large bats flying overhead casting eerie shadows across the ground The sky is overcast with clouds partially covering a glowing full moon The trees are twisted and bare with dark branches reaching out like claws Thick fog rolls across the ground creating a mysterious and slightly creepy atmosphere The color palette uses deep purples blacks and dark blues with glowing accents from the moon and the eyes of the bats The overall mood is darker and more mysterious but still playful enough for children with the bats looking curious rather than scary">Murciélagos</SelectItem>
+									<SelectItem value="Custom">Custom</SelectItem>
+								</SelectContent>
+							</Select>
 
 						
 
-						<TooltipProvider>
-							<Tooltip>
-								<TooltipTrigger asChild>
-									<Button variant="outline" size="icon" className="rounded-full">
-										<BadgeInfo />
-									</Button>
-								</TooltipTrigger>
-								<TooltipContent>
-									<p>Change the background of card with prompts</p>
-								</TooltipContent>
-							</Tooltip>
-						</TooltipProvider>
+							<TooltipProvider>
+								<Tooltip>
+									<TooltipTrigger asChild>
+										<Button variant="outline" size="icon" className="rounded-full">
+											<BadgeInfo />
+										</Button>
+									</TooltipTrigger>
+									<TooltipContent>
+										<p>Change the background of card with prompts</p>
+									</TooltipContent>
+								</Tooltip>
+							</TooltipProvider>
+
+						</div>
 
 					</div>
 
-				</div>
-
-				<div>
-					{custom &&
+					<div>
+						{custom &&
 						<form onSubmit={handleSubmit}>
 							<div className="flex w-full max-w-sm items-center space-x-2">
 								<Input name="prompt" type="text" placeholder="Write your prompt" />
@@ -686,17 +689,17 @@ function App() {
 							</div>
 
 						</form>
-					}
+						}
 
-				</div>
+					</div>
 
-				{
+					{
 					// if loading set true show loading, if set false show pokemons
-					loading
-						? <Loading />
+						loading
+							? <Loading />
 
 						// if don't have pokemons , don't show nothing
-						: pokemons &&
+							: pokemons &&
 						<div className={`flex flex-wrap gap-3 mt-10 mb-10 justify-center m-auto ${width}`}>
 							{/* cards container */}
 							{
@@ -719,21 +722,33 @@ function App() {
 								})
 							}
 						</div>
-				}
+					}
 
 
-				<Settings
-					setPkmCount={setPkmCount}
-					pkmCount={pkmCount}
-					setCardsManually={setCardsManually}
-					manually={manually}
-					setManually={setManually}
-					setTwoPlayers={setTwoPlayers}
-				/>
+					<Settings
+						setPkmCount={setPkmCount}
+						pkmCount={pkmCount}
+						setCardsManually={setCardsManually}
+						manually={manually}
+						setManually={setManually}
+						setTwoPlayers={setTwoPlayers}
+					/>
+				</div>
+
+				
+
+
+
+
 			</div>
-
-
-
+			<SheetSide 
+				setPkmCount={setPkmCount}
+				pkmCount={pkmCount}
+				setCardsManually={setCardsManually}
+				manually={manually}
+				setManually={setManually}
+				setTwoPlayers={setTwoPlayers}
+			/>
 
 		</div>
 	);

@@ -5,7 +5,6 @@ import { PokemonName, PokemonNames } from "../../types/Pokemon";
 import Swal from "sweetalert2";
 
 
-
 type Props = {
 	setPkmCount: (pkmCount: number) => void,
 	pkmCount: number,
@@ -82,7 +81,6 @@ export default function Settings({ setTwoPlayers, setPkmCount, pkmCount, setCard
 
 		// filter names that included searchValue
 		const suggestions = dataPokemonNames.Pokemon.filter(pokemon => pokemon.name.toLowerCase().includes(value.toLowerCase()));
-		console.log({suggestions});
 		setSuggestions(suggestions);
 	};
 
@@ -357,6 +355,7 @@ export default function Settings({ setTwoPlayers, setPkmCount, pkmCount, setCard
 				</form>
 			</div>
 
+			
 
 
 		</div>
