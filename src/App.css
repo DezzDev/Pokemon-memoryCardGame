@@ -2,14 +2,6 @@
 
 /* card */
 
-.card-container {
-
-	margin: 40px auto auto;
-	display: flex;
-	flex-flow: row wrap;
-	gap: 1rem;
-	justify-content: center;
-}
 
 .width-3-cards {
 	max-width: 650px;

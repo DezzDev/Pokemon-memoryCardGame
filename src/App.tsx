@@ -7,7 +7,6 @@ import { getPublicId } from "./utils/getPublicId";
 //components
 import CardPokemon from "./components/cardPokemon/CardPokemon";
 import Loading from "./components/loading/Loading";
-import Settings from "./components/settings/Settings";
 import Marcador from "./components/marcador/Marcador";
 
 // external libraries
@@ -16,9 +15,6 @@ import Swal from "sweetalert2";
 
 // cloudinary
 import { Cloudinary } from "@cloudinary/url-gen/index";
-
-
-import "./App.css";
 import { generativeBackgroundReplace } from "@cloudinary/url-gen/actions/effect";
 
 // chadcn ui
@@ -40,7 +36,11 @@ import {
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { BadgeInfo } from "lucide-react";
-import { SheetSide } from "./components/sheetSettings";
+import { SheetSetting } from "./components/settings/sheetSettings";
+import { toast } from "sonner";
+
+// css
+import "./App.css";
 
 
 
@@ -298,15 +298,14 @@ function App() {
 		// if manually
 		if (manually) {
 
+			console.log({cardsManually});
+
 			// check how many tags are 
 			if (cardsManually.length !== pkmCount) {
-				void Swal.fire({
-					title: "Error!",
-					text: `Debe seleccionar al menos: ${pkmCount} pokemons`,
-					icon: "error"
-				});
 
-				return;
+				toast.error(`Debe seleccionar ${pkmCount} Pokemon` );
+
+				return; 
 			}
 
 
@@ -723,31 +722,17 @@ function App() {
 							}
 						</div>
 					}
-
-
-					<Settings
-						setPkmCount={setPkmCount}
-						pkmCount={pkmCount}
-						setCardsManually={setCardsManually}
-						manually={manually}
-						setManually={setManually}
-						setTwoPlayers={setTwoPlayers}
-					/>
 				</div>
 
-				
-
-
-
-
 			</div>
-			<SheetSide 
+			<SheetSetting
 				setPkmCount={setPkmCount}
 				pkmCount={pkmCount}
 				setCardsManually={setCardsManually}
 				manually={manually}
 				setManually={setManually}
 				setTwoPlayers={setTwoPlayers}
+				twoPlayers={twoPlayers}
 			/>
 
 		</div>
