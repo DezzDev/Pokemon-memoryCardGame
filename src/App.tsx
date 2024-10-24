@@ -29,15 +29,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { TypographyH1 } from "./components/typography";
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipProvider,
-	TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { BadgeInfo } from "lucide-react";
 import { SheetSetting } from "./components/settings/sheetSettings";
 import { toast } from "sonner";
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "@/components/ui/popover";
 
 // css
 import "./App.css";
@@ -294,18 +293,16 @@ function App() {
 		setTurns(0);
 
 
-		
+
 		// if manually
 		if (manually) {
-
-			console.log({cardsManually});
 
 			// check how many tags are 
 			if (cardsManually.length !== pkmCount) {
 
-				toast.error(`Debe seleccionar ${pkmCount} Pokemon` );
+				toast.error(`Debe seleccionar ${pkmCount} Pokemon`);
 
-				return; 
+				return;
 			}
 
 
@@ -319,7 +316,7 @@ function App() {
 			pokemonManually.forEach(pokemon => {
 
 				if (pokemon.img) {
-					console.log({ beforeUrl: pokemon.img });
+
 					const publicId = getPublicId(pokemon.img);
 
 					const myImage = cld.image(publicId);
@@ -327,7 +324,7 @@ function App() {
 					const url = myImage.effect(generativeBackgroundReplace()
 						.prompt(prompt)).toURL();
 
-					console.log({ publicId, url });
+
 
 					pokemon.img = url;
 
@@ -341,7 +338,10 @@ function App() {
 				.then(() => {
 					setLoading(false);
 				})
-				.catch(e => { console.error(e); });
+				.catch((e: Error) => {
+					toast.error(`Error loading images ${e.message}`);
+				}
+				);
 
 			const deck = prepareDeck(pokemonManually);
 			setPokemons(deck);
@@ -360,17 +360,13 @@ function App() {
 			pokemonRandomly.forEach(pokemon => {
 
 				if (pokemon.img) {
-					console.log({ beforeUrl: pokemon.img });
 					const publicId = getPublicId(pokemon.img);
 					const myImage = cld.image(publicId);
 
 					const url = myImage.effect(generativeBackgroundReplace()
 						.prompt(prompt)).toURL();
 
-					console.log({ publicId, url });
 					pokemon.img = url;
-
-
 				}
 			});
 
@@ -381,7 +377,9 @@ function App() {
 				.then(() => {
 					setLoading(false);
 				})
-				.catch(e => { console.error(e); });
+				.catch((e: Error) => {
+					toast.error(`Error loading images: ${e.message} `);
+				});
 
 			const deck = prepareDeck(pokemonRandomly);
 
@@ -390,7 +388,7 @@ function App() {
 
 		}
 
-		
+
 
 	};
 
@@ -428,25 +426,25 @@ function App() {
 	/** 
 	 * launch confetti and alert wen the game end
 	 */
-	const confetti = ()=>{
+	const confetti = () => {
 		setTimeout(() => {
 			// confetti
 			void jsConfetti.addConfetti({
 				emojis: ["🎃", "💀", "👻", "🧛‍♂️", "🍬", "🧟‍♂️", "🦇"],
-				confettiNumber: 150 
-	
+				confettiNumber: 150
+
 			});
-	
+
 			// if two players
-			if (twoPlayers) {  
-	
+			if (twoPlayers) {
+
 				// select the winner
 				const winner = player1Points > player2Points ?
 					"Player 1"
 					: player2Points > player1Points ?
 						"Player 2"
-						: "Empate"; 
-				
+						: "Empate";
+
 				void Swal.fire({
 					title: winner,
 					icon: "success",
@@ -459,7 +457,7 @@ function App() {
 							<path d="M446.7 449.5l-11.2 65.2c-1 5.7 1.4 11.4 6 14.8 4.7 3.4 10.8 3.8 16 1.1l58.5-30.8 58.5 30.8c2.2 1.2 4.6 1.7 7.1 1.7 3.1 0 6.3-1 8.9-2.9 4.7-3.4 7-9.1 6-14.8l-11.2-65.2 47.4-46.2c4.1-4 5.6-10.1 3.8-15.5-1.8-5.5-6.5-9.5-12.2-10.3L559 368l-29.3-59.3c-2.6-5.2-7.8-8.4-13.6-8.4s-11 3.3-13.6 8.4L473.2 368l-65.5 9.5c-5.7 0.8-10.4 4.8-12.2 10.3-1.8 5.5-0.3 11.5 3.8 15.5l47.4 46.2z m38.8-52.6c4.9-0.7 9.2-3.8 11.4-8.3l19.2-38.9 19.2 38.9c2.2 4.5 6.5 7.6 11.4 8.3l43 6.2-31.1 30.3c-3.6 3.5-5.2 8.5-4.4 13.4l7.3 42.8-38.4-20.2c-4.4-2.3-9.7-2.3-14.1 0l-38.4 20.2 7.3-42.8c0.8-4.9-0.8-9.9-4.4-13.4l-31.1-30.3 43.1-6.2z" fill="#211F1E" />
 						</svg>`
 				});
-			
+
 				// if one player
 			} else {
 				void Swal.fire({
@@ -475,16 +473,16 @@ function App() {
 						</svg>`
 				});
 			}
-	
-	
-	
+
+
+
 		}, 1000);
 
 	};
 
 
 
-		
+
 
 
 
@@ -532,7 +530,7 @@ function App() {
 
 			} else {
 				// change turn
-				
+
 				setPlayer1(prev => !prev);
 				setPlayer2(prev => !prev);
 
@@ -575,7 +573,7 @@ function App() {
 	}, [gameEnd]);
 
 	const handleChange = (value: string) => {
-	
+
 		if (value === "Custom") {
 			setCustom(true);
 		} else {
@@ -587,7 +585,6 @@ function App() {
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		console.log(e);
 		const formData = new FormData(e.currentTarget);
 		const promptValue = formData.get("prompt")?.toString();
 
@@ -595,8 +592,8 @@ function App() {
 			toast.error("Write a prompt");
 			return;
 
-		}else{			
-			
+		} else {
+
 			setPrompt(promptValue);
 			toast.success("Prompt set");
 		}
@@ -613,7 +610,7 @@ function App() {
 
 				<div className="flex flex-col justify-around items-center">
 					<TypographyH1 style="text-center mb-10">
-					POKEMON MEMORY GAME
+						POKEMON MEMORY GAME
 					</TypographyH1>
 
 					<Marcador
@@ -642,20 +639,16 @@ function App() {
 								</SelectContent>
 							</Select>
 
-						
-
-							<TooltipProvider>
-								<Tooltip>
-									<TooltipTrigger asChild>
-										<Button variant="outline" size="icon" className="rounded-full">
-											<BadgeInfo />
-										</Button>
-									</TooltipTrigger>
-									<TooltipContent>
-										<p>Change the background of card with prompts</p>
-									</TooltipContent>
-								</Tooltip>
-							</TooltipProvider>
+							<Popover>
+								<PopoverTrigger>
+									<Button variant="outline" size="icon" className="rounded-full">
+										<BadgeInfo />
+									</Button>
+								</PopoverTrigger>
+								<PopoverContent>
+									<p>Change the background of card with prompts</p>
+								</PopoverContent>
+							</Popover>
 
 						</div>
 
@@ -663,46 +656,46 @@ function App() {
 
 					<div>
 						{custom &&
-						<form onSubmit={handleSubmit}>
-							<div className="flex w-full max-w-sm items-center space-x-2">
-								<Input name="prompt" type="text" placeholder="Write your prompt" />
-								<Button type="submit">Use Prompt</Button>
-							</div>
+							<form onSubmit={handleSubmit}>
+								<div className="flex w-full max-w-sm items-center space-x-2">
+									<Input name="prompt" type="text" placeholder="Write your prompt" />
+									<Button type="submit">Use Prompt</Button>
+								</div>
 
-						</form>
+							</form>
 						}
 
 					</div>
 
 					{
-					// if loading set true show loading, if set false show pokemons
+						// if loading set true show loading, if set false show pokemons
 						loading
 							? <Loading />
 
-						// if don't have pokemons , don't show nothing
+							// if don't have pokemons , don't show nothing
 							: pokemons &&
-						<div className={`flex flex-wrap gap-3 mt-10 mb-10 justify-center m-auto ${width}`}>
-							{/* cards container */}
-							{
+							<div className={`flex flex-wrap gap-3 mt-10 mb-10 justify-center m-auto ${width}`}>
+								{/* cards container */}
+								{
 
-								pokemons.map((pokemon, index) => {
-									return (
-										<CardPokemon
-											key={index}
-											pokemon={pokemon}
-											handleChoice={handleChoice}
-											flipped={
-												pokemon === choiceOne ||
-												pokemon === choiceTwo ||
-												pokemon.matched
+									pokemons.map((pokemon, index) => {
+										return (
+											<CardPokemon
+												key={index}
+												pokemon={pokemon}
+												handleChoice={handleChoice}
+												flipped={
+													pokemon === choiceOne ||
+													pokemon === choiceTwo ||
+													pokemon.matched
 
-											}
-											disabled={disabled}
-										/>
-									);
-								})
-							}
-						</div>
+												}
+												disabled={disabled}
+											/>
+										);
+									})
+								}
+							</div>
 					}
 				</div>
 
