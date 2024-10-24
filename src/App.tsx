@@ -645,8 +645,10 @@ function App() {
 										<BadgeInfo />
 									</Button>
 								</PopoverTrigger>
-								<PopoverContent>
-									<p>Change the background of card with prompts</p>
+								<PopoverContent className="text-xs">
+									<p>Change the background of card with prompts.</p>
+									<p>Try to specify every detail and do not use punctuation marks.</p>
+									<p><b>Example:</b>  Create a dark and spooky Halloween-themed background for Pokémon cards aimed at children The scene is set in a shadowy forest at night with large bats flying overhead casting eerie shadows across the ground The sky is overcast with clouds partially covering a glowing full moon The trees are twisted and bare with dark branches reaching out like claws Thick fog rolls across the ground creating a mysterious and slightly creepy atmosphere The color palette uses deep purples blacks and dark blues with glowing accents from the moon and the eyes of the bats The overall mood is darker and more mysterious but still playful enough for children with the bats looking curious rather than scary</p>
 								</PopoverContent>
 							</Popover>
 
