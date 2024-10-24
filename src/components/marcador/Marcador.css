@@ -1,20 +1,12 @@
-.marcador{
-	display: grid;
-	grid-template-columns: auto auto auto;
-	align-items: center;
-	justify-content: space-around;
-	
-	
-}
 
-.marcador .player{
+/* .marcador .player{
 	display: flex;
 	flex-direction: column;
 	animation: all 1s;
 	
 }
 
-.marcador .player-active{
+.player-active{
 	animation: player-active 1s forwards .5s;
 	
 }
@@ -27,4 +19,4 @@
 	}
 }
 
-
+ */
