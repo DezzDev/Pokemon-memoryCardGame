@@ -1,11 +1,11 @@
 # 🃏 Pokémon Memory Game
 
-Un divertido juego de memoria de cartas de Pokémon hecho con **React**, **TypeScript**, **Tailwind CSS**, y componentes de **@chadcn**. ¡Pon a prueba tu memoria, personaliza el número de cartas y elige entre modo individual o de dos jugadores! Puedes seleccionar fondos de cartas generados con IA o incluso crear los tuyos propios.
+Un divertido juego de memoria de cartas de Pokémon hecho con **React**, **TypeScript**, **Tailwind CSS**, y componentes de **chadcn**. ¡Pon a prueba tu memoria, personaliza el número de cartas y elige entre modo individual o de dos jugadores! Puedes seleccionar fondos de cartas generados con IA o incluso crear los tuyos propios.
 
 
 ## 🚀 Demo
 
-[Enlace a la demo del juego (si está en producción)](https://dezzdev.github.io/Pokemon-memoryCardGame/)
+[Enlace a la demo del juego](https://dezzdev.github.io/Pokemon-memoryCardGame/)
 
 ## 📸 Capturas de Pantalla
 
