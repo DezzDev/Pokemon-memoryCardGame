@@ -464,6 +464,7 @@ function App() {
 			} else {
 				void Swal.fire({
 					title: "Juego Terminado",
+					buttonsStyling: true,
 					icon: "success",
 					iconHtml: `<svg width="80px" height="80px" viewBox="0 0 1024 1024" class="icon" version="1.1"
 							xmlns="http://www.w3.org/2000/svg">
@@ -481,11 +482,6 @@ function App() {
 		}, 1000);
 
 	};
-
-
-
-
-
 
 
 	/**
@@ -604,14 +600,14 @@ function App() {
 
 
 
-	return (
-		<div className="relative">
+	return ( 
+		<div className="relative min-h-screen bg-halloween bg-cover bg-center bg-no-repeat">
 
 			<div className='ml-auto mr-auto pt-10 pl-5 pr-5 max-w-[1690px]'>
-
+ 
 
 				<div className="flex flex-col justify-around items-center">
-					<TypographyH1 style="text-center mb-10">
+					<TypographyH1 style="text-center mb-10 butcherman-regular text-6xl ">
 						POKEMON MEMORY GAME
 					</TypographyH1>
 
@@ -626,11 +622,11 @@ function App() {
 
 					<div className="flex justify-center gap-x-5 my-6">
 
-						<Button variant="secondary" onClick={newGame}>New Game</Button>
+						<Button variant="default" onClick={newGame}>New Game</Button>
 
 						<div className="flex gap-2">
 							<Select onValueChange={(value) => { handleChange(value); }}>
-								<SelectTrigger className="w-[180px]">
+								<SelectTrigger  className="w-[180px]">
 									<SelectValue placeholder="Calabazas" />
 								</SelectTrigger>
 								<SelectContent>
@@ -664,7 +660,7 @@ function App() {
 							<form onSubmit={handleSubmit}>
 								<div className="flex w-full max-w-sm items-center space-x-2">
 									<Input name="prompt" type="text" placeholder="Write your prompt" />
-									<Button type="submit">Use Prompt</Button>
+									<Button variant="secondary" type="submit">Use Prompt</Button>
 								</div>
 
 							</form>

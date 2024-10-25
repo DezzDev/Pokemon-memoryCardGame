@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import "./Marcador.css";
+
 
 type props = {
 	player1: boolean,
@@ -20,18 +20,18 @@ export default function Marcador({
 }: props) {
 	return (
 
-		<section className={twoPlayers ? "grid grid-cols-3 w-full justify-center items-center" : ""} >
+		<section className={twoPlayers ? "grid grid-cols-3 justify-center items-center w-full max-w-96 lg:max-w-4xl creepster-regular text-2xl" : "creepster-regular text-2xl"} >
 
 			{twoPlayers ?
 				<div className={cn("flex flex-col items-center", 
 					player1 ? "text-yellow-400 scale-150 transition-all font-bold" : "player")}>
 					<h2 >Player 1</h2>
 					<span >{`${player1Points} `}</span>
-				</div>
+				</div> 
 				: ""
 			}
 
-			<h3 className="flex justify-center" >Turns: {turns}</h3>
+			<h3 className="flex justify-center " >Turns: {turns}</h3>
 
 			{
 				twoPlayers ?
