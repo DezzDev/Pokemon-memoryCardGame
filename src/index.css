@@ -48,7 +48,7 @@
 
 @layer utilities {
   .bg-halloween {
-    background-image: url("/public/background-halloween.webp");
+    background-image: url("/background-halloween.webp");
   }
 
 	.creepster-regular {
