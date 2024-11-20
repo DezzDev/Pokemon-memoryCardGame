@@ -2,7 +2,7 @@
 export type PokemonName = {
 	name: string,
 	id: number,
-	img: string
+	img?: string
 }
 export type PokemonNames = {
 	Pokemon: PokemonName[]

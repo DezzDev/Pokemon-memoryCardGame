@@ -1,8 +1,6 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
-import { PokemonMin, PokemonName } from "./types/Pokemon";
+import { useState, useEffect, useMemo, useCallback } from "react";
+import { Pokemon, PokemonMin, PokemonName } from "./types/Pokemon";
 import { generateRandomNum } from "./utils/generateRandom";
-import dataPokemon from "./data/pokemonName.json";
-import { getPublicId } from "./utils/getPublicId";
 
 //components
 import CardPokemon from "./components/cardPokemon/CardPokemon";
@@ -13,39 +11,18 @@ import Marcador from "./components/marcador/Marcador";
 import JSConfetti from "js-confetti";
 import Swal from "sweetalert2";
 
-// cloudinary
-import { Cloudinary } from "@cloudinary/url-gen/index";
-import { generativeBackgroundReplace } from "@cloudinary/url-gen/actions/effect";
 
 // chadcn ui
 
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
+
+
 import { Button } from "@/components/ui/button";
 import { TypographyH1 } from "./components/typography";
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipProvider,
-	TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { BadgeInfo } from "lucide-react";
 import { SheetSetting } from "./components/settings/sheetSettings";
 import { toast } from "sonner";
 
 // css
 import "./App.css";
-
-
-
-
-
 
 function App() {
 
@@ -81,49 +58,47 @@ function App() {
 	const [player2, setPlayer2] = useState(false);
 	// to know if are two players
 	const [twoPlayers, setTwoPlayers] = useState(false);
-	const [prompt, setPrompt] = useState("Create a fun and spooky Halloween-themed background for a Butterfree Pokémon card aimed at children The scene is set in a magical forest at night with glowing pumpkins and smiling jack-o'-lanterns scattered around The sky is filled with soft glowing stars and a friendly full moon Butterfree is surrounded by cute bats and floating ghost-like figures that are more playful than scary The color palette uses bright purples oranges and soft greens to create a magical yet spooky atmosphere suitable for kids The overall mood is spooky but fun with elements like cobwebs and candles giving a gentle Halloween vibe");
-	const [custom, setCustom] = useState(false);
+	
 
 
 	// create confetti instance
 	const jsConfetti = useMemo(() => new JSConfetti(), []);
 
-	// Cloudinary instance
-	const cld = new Cloudinary({
-		cloud: {
-			cloudName: "dezzdev"
-		}
-	});
 
 
 
 
 	/**
 	 * to get randomly Pokémon from data
-	 * @param pkmsCount number of pokemons thats was selected
+	 * @param pkmsCount number of pokemon thats was selected
 	 * @returns Array with the number of Pokemon that have been specified
 	 */
-	const getPokemonRandomly = (pkmsCount: number) => {
+	const getPokemonRandomly= async(pkmsCount: number) => {
+		const url = "https://pokeapi.co/api/v2/pokemon/";
+		const pokemonFetchPromises= [];
 
-		const pokemonData: PokemonMin[] = [];
+		
 		// function to generate as many random numbers as specified
 		const randomNums = generateRandomNum(1, 21, pkmsCount);
 
 
 		for (let i = 0; i < randomNums.length; i++) {
 			const randomNum = randomNums[i];
-			const pokemon = dataPokemon.Pokemon.find(pok => {
-				return pok.id === randomNum;
+			const promise  = fetch(url + "/" + randomNum).then(response => {
+				if(!response.ok){
+					throw new Error(`fetching error Pokemon: ${response.statusText}`);
+				}
+				return response.json() as Promise<Pokemon>;
 			});
+			pokemonFetchPromises.push(promise);
 
-			if (pokemon) {
-				pokemonData.push({ ...pokemon, matched: false });
-
-			}
 		}
-
-		// return pokemons
-		return pokemonData;
+		const data:Pokemon[] = await Promise.all(pokemonFetchPromises);
+		const dataReturn:PokemonMin[] =  data.map(pokemon => {
+			return {name: pokemon.name, id: pokemon.id, img:pokemon.sprites.front_default, matched: false};
+		});
+		
+		return dataReturn;
 
 
 	};
@@ -134,27 +109,36 @@ function App() {
 	 * @param cards array of cards that we will find
 	 * @returns Array with the number of Pokemon that have been specified
 	 */
-	const getPokemonManually = (cards: PokemonName[]) => {
+	const getPokemonManually = async (cards: PokemonName[]) => {
+		const url = "https://pokeapi.co/api/v2/pokemon/";
 
-		const pokemonData: PokemonMin[] = [];
-
+		const fetchPromises = [];
 
 		for (let i = 0; i < cards.length; i++) {
-			const cardSelected = cards[i];
+			const cardSelected = cards[i];		
+			
+			const promise = fetch(`${url}/${cardSelected.id}`).then(response => {
+				if(!response.ok){
+					throw new Error(`Error fetching: ${response.statusText}`);
+				}
+				return response.json() as Promise<Pokemon>;
+			});
+	
+			fetchPromises.push(promise);
 
-			const pokemon = dataPokemon.Pokemon.find(pok => (
-				pok.id === cardSelected.id
-			));
-			if (pokemon) {
-				pokemonData.push({ ...pokemon, matched: false });
-			}
 		}
 
-		// return pokemons
-		return pokemonData;
+		const data = await Promise.all(fetchPromises);
 
+		const dataReturn = data.map(pokemon =>{
+			return {id:pokemon.id, name: pokemon.name, img: pokemon.sprites.front_default, matched: false};
+		});
+		// return pokemon
+		return dataReturn;
 
 	};
+
+
 
 	/**
 	 * 
@@ -247,31 +231,12 @@ function App() {
 	};
 
 	/**
-	 * function to know if all urls are loaded
-	 * @param imageUrl array of image urls  
-	 * @returns promise 
-	 */
-	const loadImages = (imageUrl: string[]) => {
-		const promises = imageUrl.map(url => {
-			return new Promise<void>(resolve => {
-				const img = new Image();
-				img.src = url;
-				img.onload = () => { resolve(); };
-				img.onerror = () => { resolve(); };
-			});
-		});
-		// Cuando todas las promesas se resuelvan, significa que todas las imágenes se han cargado
-		return Promise.all(promises);
-	};
-
-
-	/**
 	 * Get the numbers of Pokémon and set pkmsCount
 	 * call fetchData to get Pokémon
 	 * call shuffleCard to duplicate and sort randomly 
 	 * @param e event of click
 	 */
-	const newGame = () => {
+	const newGame = async () => {
 
 
 		//set player1 to first
@@ -289,16 +254,11 @@ function App() {
 		// set choices to null
 		setChoiceOne(null);
 		setChoiceTwo(null);
-
 		// resets turns
 		setTurns(0);
-
-
 		
 		// if manually
 		if (manually) {
-
-			console.log({cardsManually});
 
 			// check how many tags are 
 			if (cardsManually.length !== pkmCount) {
@@ -313,38 +273,13 @@ function App() {
 			setLoading(true);
 
 			// get pokemon manually
-			const pokemonManually = getPokemonManually(cardsManually);
+			const pokemonManually = await getPokemonManually(cardsManually);
 
-			// through deck to change img
-			pokemonManually.forEach(pokemon => {
-
-				if (pokemon.img) {
-					console.log({ beforeUrl: pokemon.img });
-					const publicId = getPublicId(pokemon.img);
-
-					const myImage = cld.image(publicId);
-
-					const url = myImage.effect(generativeBackgroundReplace()
-						.prompt(prompt)).toURL();
-
-					console.log({ publicId, url });
-
-					pokemon.img = url;
-
-
-				}
-			});
-
-			const imageUrls = pokemonManually.map(pokemon => pokemon.img);
-			if (typeof imageUrls === "undefined") return;
-			loadImages(imageUrls as string[])
-				.then(() => {
-					setLoading(false);
-				})
-				.catch(e => { console.error(e); });
 
 			const deck = prepareDeck(pokemonManually);
 			setPokemons(deck);
+
+			setLoading(false);
 
 
 		} else {
@@ -354,39 +289,14 @@ function App() {
 			setLoading(true);
 
 			// get Pokemon randomly
-			const pokemonRandomly = getPokemonRandomly(pkmCount);
+			const pokemonRandomly = await getPokemonRandomly(pkmCount);
 
-			// // through deck to change img
-			pokemonRandomly.forEach(pokemon => {
-
-				if (pokemon.img) {
-					console.log({ beforeUrl: pokemon.img });
-					const publicId = getPublicId(pokemon.img);
-					const myImage = cld.image(publicId);
-
-					const url = myImage.effect(generativeBackgroundReplace()
-						.prompt(prompt)).toURL();
-
-					console.log({ publicId, url });
-					pokemon.img = url;
-
-
-				}
-			});
-
-			// to set loader false
-			const imageUrls = pokemonRandomly.map(pokemon => pokemon.img);
-			if (typeof imageUrls === "undefined") return;
-			loadImages(imageUrls as string[])
-				.then(() => {
-					setLoading(false);
-				})
-				.catch(e => { console.error(e); });
-
+			
 			const deck = prepareDeck(pokemonRandomly);
-
+			
 			setPokemons(deck);
-
+			
+			setLoading(false);
 
 		}
 
@@ -591,35 +501,9 @@ function App() {
 
 	}, [gameEnd]);
 
-	const handleChange = (value: string) => {
-		if (!value) return;
-		if (value === "Custom") {
-			setCustom(true);
-		} else {
-			setCustom(false);
-			setPrompt(value);
-		}
+	
 
-	};
 
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		console.log(e);
-		const formData = new FormData(e.currentTarget);
-		const promptValue = formData.get("prompt")?.toString();
-
-		if (promptValue) {
-
-			setPrompt(promptValue);
-
-			void Swal.fire({
-				title: "Prompt set",
-				icon: "success"
-			});
-
-		}
-
-	};
 
 
 
@@ -645,52 +529,13 @@ function App() {
 
 					<div className="flex justify-center gap-x-5 my-6">
 
-						<Button variant="secondary" className="" onClick={newGame}>New Game</Button>
-
-						<div className="flex gap-2">
-							<Select onValueChange={(value) => { handleChange(value); }}>
-								<SelectTrigger className="w-[180px]">
-									<SelectValue placeholder="Calabazas" />
-								</SelectTrigger>
-								<SelectContent>
-									<SelectItem value="Create a fun and spooky Halloween-themed background for a Butterfree Pokémon card aimed at children The scene is set in a magical forest at night with glowing pumpkins and smiling jack-o'-lanterns scattered around The sky is filled with soft glowing stars and a friendly full moon Butterfree is surrounded by cute bats and floating ghost-like figures that are more playful than scary The color palette uses bright purples oranges and soft greens to create a magical yet spooky atmosphere suitable for kids The overall mood is spooky but fun with elements like cobwebs and candles giving a gentle Halloween vibe">Calabazas</SelectItem>
-									<SelectItem value="Create a fun and spooky Halloween-themed background for Pokémon cards aimed at children The scene is set in a misty forest at night with playful ghost-like figures floating around The ghosts are smiling and waving creating a friendly and not scary atmosphere The full moon shines brightly in the sky surrounded by twinkling stars The forest is decorated with glowing orbs and cobwebs hanging between the trees The color palette includes soft blues purples and whites to give a magical and spooky but gentle vibe perfect for kids The overall mood is playful and spooky with the friendly ghosts being the main focus">Fantasmas</SelectItem>
-									<SelectItem value="Create a dark and spooky Halloween-themed background for Pokémon cards aimed at children The scene is set in a shadowy forest at night with large bats flying overhead casting eerie shadows across the ground The sky is overcast with clouds partially covering a glowing full moon The trees are twisted and bare with dark branches reaching out like claws Thick fog rolls across the ground creating a mysterious and slightly creepy atmosphere The color palette uses deep purples blacks and dark blues with glowing accents from the moon and the eyes of the bats The overall mood is darker and more mysterious but still playful enough for children with the bats looking curious rather than scary">Murciélagos</SelectItem>
-									<SelectItem value="Custom">Custom</SelectItem>
-								</SelectContent>
-							</Select>
+						<Button variant="secondary" className="" onClick={()=>{newGame().catch(error => {	toast.error(`Error: ${error}` );});}}>New Game</Button>
 
 						
 
-							<TooltipProvider>
-								<Tooltip>
-									<TooltipTrigger asChild>
-										<Button variant="outline" size="icon" className="rounded-full">
-											<BadgeInfo />
-										</Button>
-									</TooltipTrigger>
-									<TooltipContent>
-										<p>Change the background of card with prompts</p>
-									</TooltipContent>
-								</Tooltip>
-							</TooltipProvider>
-
-						</div>
-
 					</div>
 
-					<div>
-						{custom &&
-						<form onSubmit={handleSubmit}>
-							<div className="flex w-full max-w-sm items-center space-x-2">
-								<Input name="prompt" type="text" placeholder="Write your prompt" />
-								<Button type="submit">Use Prompt</Button>
-							</div>
-
-						</form>
-						}
-
-					</div>
+						
 
 					{
 					// if loading set true show loading, if set false show pokemons

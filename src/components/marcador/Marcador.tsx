@@ -19,10 +19,10 @@ export default function Marcador({
 }: props) {
 	return (
 
-		<section className="marcador">
+		<section className="grid grid-cols-3 justify-around w-full text-center md:text-xl">
 			<div>
 				{twoPlayers
-					? <div className={player1 ? "player player-active" : "player"}>
+					? <div className={player1 ? "text-yellow-500 font-bold scale-150 transition-all " : ""}>
 						<h2 >Player 1</h2>
 						<span >{`${player1Points} `}</span>
 					</div>
@@ -31,12 +31,12 @@ export default function Marcador({
 
 			</div>
 
-			<h3 className="turns" >Turns: {turns}</h3>
+			<h3 className="" >Turns: {turns}</h3>
 
 			<div>
 				{
 					twoPlayers
-						? <div className={player2 ? "player player-active" : "player"}>
+						? <div className={player2 ? "text-yellow-500 font-bold scale-150 transition-all" : ""}>
 							<h2 >Player 2</h2>
 							<span >{`${player2Points} `}</span>
 						</div>
