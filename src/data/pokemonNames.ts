@@ -1,5 +1,7 @@
-{
-	"pokemons": [
+import { PokemonName } from "@/types/Pokemon";
+
+export const dataPokemon: { Pokemon: PokemonName[] } = {
+	"Pokemon": [
 		{
 			"name": "bulbasaur",
 			"id": 1
@@ -4097,4 +4099,4 @@
 			"id": 1024
 		}
 	]
-}
+};

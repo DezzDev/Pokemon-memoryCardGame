@@ -20,29 +20,30 @@ export default function Marcador({
 }: props) {
 	return (
 
-		<section className={twoPlayers ? "grid grid-cols-3 justify-center items-center w-full max-w-96 lg:max-w-4xl creepster-regular text-2xl" : "creepster-regular text-2xl"} >
-
-			{twoPlayers ?
-				<div className={cn("flex flex-col items-center", 
-					player1 ? "text-yellow-400 scale-150 transition-all font-bold" : "player")}>
-					<h2 >Player 1</h2>
-					<span >{`${player1Points} `}</span>
-				</div> 
-				: ""
-			}
-
-			<h3 className="flex justify-center " >Turns: {turns}</h3>
-
-			{
-				twoPlayers ?
-					<div className={cn("flex flex-col items-center",
-						player2 ? "text-yellow-400 scale-150 transition-all font-bold" : "player")}>
-						<h2 >Player 2</h2>
-						<span >{`${player2Points} `}</span>
+		<section className="grid grid-cols-3 justify-around w-full text-center md:text-xl">
+			<div>
+				{twoPlayers
+					? <div className={player1 ? "text-yellow-500 font-bold scale-150 transition-all " : ""}>
+						<h2 >Player 1</h2>
+						<span >{`${player1Points} `}</span>
 					</div>
 					: ""
-			}
+				}
 
+			</div>
+
+			<h3 className="" >Turns: {turns}</h3>
+
+			<div>
+				{
+					twoPlayers
+						? <div className={player2 ? "text-yellow-500 font-bold scale-150 transition-all" : ""}>
+							<h2 >Player 2</h2>
+							<span >{`${player2Points} `}</span>
+						</div>
+						: ""
+				}
+			</div>
 
 
 		</section>
