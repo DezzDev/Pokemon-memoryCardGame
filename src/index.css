@@ -62,6 +62,10 @@
 		font-weight: 400;
 		font-style: normal;
 	}
+
+	.drop-shadow{
+		filter: drop-shadow(0 0 7rem rgba(211, 245, 39, 0.5));
+	}
 	
 	
 }

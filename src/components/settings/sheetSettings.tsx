@@ -32,10 +32,10 @@ import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
 
 // data
-import jsonPokemonName from "@/data/pokemonName.json";
-import { PokemonMin, PokemonNames, PokemonName } from "@/types/Pokemon";
+import { dataPokemon } from "@/data/pokemonNames";
+import type { PokemonMin, PokemonName } from "@/types/Pokemon";
 
-const dataPokemonNames: PokemonNames = jsonPokemonName;
+
 
 interface props {
 	setPkmCount: (pkmCount: number) => void,
@@ -71,7 +71,7 @@ export function SheetSetting({manually, setManually, pkmCount, setPkmCount, setT
 		}
 
 		// check if pokemon exist
-		const pokemon = dataPokemonNames.Pokemon.find(pokemon => pokemon.name === valueTag);
+		const pokemon = dataPokemon.Pokemon.find(pokemon => pokemon.name === valueTag);
 		if(!pokemon){
 			toast.error("Pokemon not found");
 			return;
@@ -228,7 +228,7 @@ export function SheetSetting({manually, setManually, pkmCount, setPkmCount, setT
 												className="w-[200px] justify-between"
 											>
 												{valueTag
-													? dataPokemonNames.Pokemon.find((pokemon) => pokemon.name === valueTag)?.name
+													? dataPokemon.Pokemon.find((pokemon) => pokemon.name === valueTag)?.name
 													: "Select Pokemon..."}
 												<CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
 											</Button>
@@ -241,7 +241,7 @@ export function SheetSetting({manually, setManually, pkmCount, setPkmCount, setT
 													<CommandGroup>
 
 														{
-															dataPokemonNames.Pokemon.map((pokemon:PokemonMin) =>{
+															dataPokemon.Pokemon.map((pokemon:PokemonMin) =>{
 																return <CommandItem
 																	key={pokemon.id}
 																	value={pokemon.name}
