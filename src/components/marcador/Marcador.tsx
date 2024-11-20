@@ -1,5 +1,3 @@
-import { cn } from "@/lib/utils";
-
 
 type props = {
 	player1: boolean,

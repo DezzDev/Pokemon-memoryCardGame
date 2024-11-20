@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Pokemon, PokemonMin, PokemonName } from "./types/Pokemon";
 import { generateRandomNum } from "./utils/generateRandom";
 
@@ -20,11 +20,6 @@ import { Button } from "@/components/ui/button";
 import { TypographyH1 } from "./components/typography";
 import { SheetSetting } from "./components/settings/sheetSettings";
 import { toast } from "sonner";
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from "@/components/ui/popover";
 
 // css
 import "./App.css";
