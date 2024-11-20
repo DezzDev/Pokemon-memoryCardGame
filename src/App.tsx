@@ -484,7 +484,7 @@ function App() {
 
 
 	return ( 
-		<div className="relative min-h-screen bg-halloween bg-cover bg-center bg-no-repeat">
+		<div className="relative min-h-screen bg-slate-950">
 
 			<div className='ml-auto mr-auto pt-10 pl-5 pr-5 max-w-[1690px]'>
  
