@@ -95,7 +95,7 @@ function App() {
 		}
 		const data: Pokemon[] = await Promise.all(pokemonFetchPromises);
 		const dataReturn: PokemonMin[] = data.map(pokemon => {
-			return { name: pokemon.name, id: pokemon.id, img: pokemon.sprites.front_default, matched: false };
+			return { name: pokemon.name, id: pokemon.id, img: pokemon.sprites.front_default, matched: false, type:pokemon.types[0].type.name };
 		});
 
 		return dataReturn;
@@ -131,7 +131,7 @@ function App() {
 		const data = await Promise.all(fetchPromises);
 
 		const dataReturn = data.map(pokemon => {
-			return { id: pokemon.id, name: pokemon.name, img: pokemon.sprites.front_default, matched: false };
+			return { id: pokemon.id, name: pokemon.name, img: pokemon.sprites.front_default, matched: false, type:pokemon.types[0].type.name };
 		});
 		// return pokemon
 		return dataReturn;
@@ -299,12 +299,7 @@ function App() {
 			setLoading(false);
 
 		}
-
-
-
 	};
-
-
 
 	/**
 	 * get the cards when click over there 
@@ -478,13 +473,14 @@ function App() {
 	}, [ gameEnd ]);
 
 	return (
-		<div className="relative min-h-screen ">
+		<div className="relative min-h-screen bg-hero bg-cover bg-no-repeat bg-center">
+			<div className="absolute inset-0 bg-black/50 z-0"></div>
 
 			<div className='ml-auto mr-auto pt-10 pl-5 pr-5 max-w-[1690px]'>
 
-				<div className="flex flex-col justify-around items-center space-y-10 drop-shadow">
+				<div className="flex flex-col justify-around items-center space-y-10 ">
 					
-					<TypographyH1 style="text-center butcherman-regular text-6xl ">
+					<TypographyH1 style="text-center font-pokemon drop-shadow text-outline">
 						POKEMON MEMORY GAME
 					</TypographyH1>
 
@@ -497,7 +493,13 @@ function App() {
 						twoPlayers={twoPlayers}
 					/>
 
-					<Button variant="secondary" onClick={() => { newGame().catch(error => { toast.error(`Error: ${error}`); }); }}>New Game</Button>
+					<Button 
+						variant="secondary" 
+						onClick={() => { newGame().catch(error => { toast.error(`Error: ${error}`); }); }}
+						className="poppins-regular z-10"
+					>
+						New Game
+					</Button>
 
 					{
 						// if loading set true show loading, if set false show pokemons

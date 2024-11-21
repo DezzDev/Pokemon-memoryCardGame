@@ -13,7 +13,8 @@ export type PokemonMin ={
 	img?: string,
 	name: string,
 	matched?: boolean,
-	index?: number
+	index?: number,
+	type: string
 }
 
 export type Pokemon = {

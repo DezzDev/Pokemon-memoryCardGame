@@ -9,8 +9,8 @@ Un divertido juego de memoria de cartas de Pokémon hecho con **React**, **TypeS
 
 ## 📸 Capturas de Pantalla
 
-![Captura del Juego](/public/CapturaPokemonMemoriGame.webp)
-![Captura de Victoria](/public/CapturaPokemonMemoriGame2.webp)
+<!-- ![Captura del Juego](/public/CapturaPokemonMemoriGame.webp)
+![Captura de Victoria](/public/CapturaPokemonMemoriGame2.webp) -->
 
 ## 📝 Características
 
@@ -56,4 +56,7 @@ Un divertido juego de memoria de cartas de Pokémon hecho con **React**, **TypeS
 
 4. **Gana el Juego**:
    - Encuentra todos los pares para ganar la partida. Una vez completado, verás una animación de confeti y recibirás un mensaje de felicitación.
+
+# Attributions 
+- Pokémon Solid font : https://www.fontspace.com/pokemon-solid-font-f13844
 

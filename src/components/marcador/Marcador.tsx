@@ -18,7 +18,7 @@ export default function Marcador({
 }: props) {
 	return (
 
-		<section className="grid grid-cols-3 justify-around w-full text-center md:text-xl">
+		<section className="grid grid-cols-3 justify-around w-full text-center poppins-regular text-outline drop-shadow md:text-xl">
 			<div>
 				{twoPlayers
 					? <div className={player1 ? "text-yellow-500 font-bold scale-150 transition-all " : ""}>
