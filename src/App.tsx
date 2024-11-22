@@ -476,7 +476,7 @@ function App() {
 		<div className="relative min-h-screen bg-hero bg-cover bg-no-repeat bg-center">
 			<div className="absolute inset-0 bg-black/50 z-0"></div>
 
-			<div className='ml-auto mr-auto pt-10 pl-5 pr-5 max-w-[1690px]'>
+			<div className='ml-auto mr-auto pt-10 pb-10 pl-5 pr-5 max-w-[1690px]'>
 
 				<div className="flex flex-col justify-around items-center space-y-10 ">
 					
