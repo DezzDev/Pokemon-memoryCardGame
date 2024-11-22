@@ -33,7 +33,7 @@ import { cn } from "@/lib/utils";
 
 // data
 import { dataPokemon } from "@/data/pokemonNames";
-import type { PokemonMin, PokemonName } from "@/types/Pokemon";
+import type { PokemonName } from "@/types/Pokemon";
 
 
 
@@ -241,7 +241,7 @@ export function SheetSetting({manually, setManually, pkmCount, setPkmCount, setT
 													<CommandGroup>
 
 														{
-															dataPokemon.Pokemon.map((pokemon:PokemonMin) =>{
+															dataPokemon.Pokemon.map((pokemon) =>{
 																return <CommandItem
 																	key={pokemon.id}
 																	value={pokemon.name}
