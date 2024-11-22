@@ -178,7 +178,7 @@ export default function CardPokemon({
 					>{pokemon.name.toLocaleUpperCase()}</p>
 				</div>
 				<img
-					src="pokemon_card_backside.PNG"
+					src="pokemon_card_backside_pixel.webp"
 					alt="card back"
 					className='back top-0 absolute'
 					onClick={handleClick}
