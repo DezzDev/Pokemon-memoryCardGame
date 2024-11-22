@@ -238,7 +238,10 @@ function App() {
 	 */
 	const newGame = async () => {
 
-
+		if(pkmCount > 13){
+			toast.error("Maximum number of pairs of cards is 13");
+			return;
+		}
 		//set player1 to first
 		setPlayer1(true);
 		// set player2 to second
@@ -263,7 +266,7 @@ function App() {
 			// check how many tags are 
 			if (cardsManually.length !== pkmCount) {
 
-				toast.error(`Debe seleccionar ${pkmCount} Pokemon`);
+				toast.error(`You must select ${pkmCount} Pokemon`);
 
 				return;
 			}
@@ -350,7 +353,7 @@ function App() {
 					"Player 1"
 					: player2Points > player1Points ?
 						"Player 2"
-						: "Empate";
+						: "Tie";
 
 				void Swal.fire({
 					title: winner,
@@ -368,7 +371,7 @@ function App() {
 				// if one player
 			} else {
 				void Swal.fire({
-					title: "Juego Terminado",
+					title: "Congratulations",
 					buttonsStyling: true,
 					icon: "success",
 					iconHtml: `<svg width="80px" height="80px" viewBox="0 0 1024 1024" class="icon" version="1.1"

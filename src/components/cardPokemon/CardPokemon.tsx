@@ -180,7 +180,7 @@ export default function CardPokemon({
 				<img
 					src="pokemon_card_backside_pixel.webp"
 					alt="card back"
-					className='back top-0 absolute'
+					className='back inset-0 h-full w-full absolute'
 					onClick={handleClick}
 				/>
 			</div>
