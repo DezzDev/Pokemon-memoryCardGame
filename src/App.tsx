@@ -337,8 +337,8 @@ function App() {
 		setTimeout(() => {
 			// confetti
 			void jsConfetti.addConfetti({
-				emojis: [ "🎃", "💀", "👻", "🧛‍♂️", "🍬", "🧟‍♂️", "🦇" ],
-				confettiNumber: 150
+				
+				confettiNumber: 3000
 
 			});
 
