@@ -6,6 +6,14 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Badge } from "@/components/ui/badge";
 import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
+
+import {
 	Sheet,	
 	SheetContent,
 	SheetDescription,
@@ -145,6 +153,25 @@ export function SheetSetting({manually, setManually, pkmCount, setPkmCount, setT
 						</SheetDescription>
 					</SheetHeader>
 					<div className="grid gap-8 py-4">
+
+						{/* select card style */}
+
+						<Select>
+							<div className="grid grid-cols-6 items-center gap-4" >
+								<Label className="col-span-2">Card style</Label>
+								<SelectTrigger className="col-span-3">
+									<SelectValue defaultValue={"pixel"} placeholder="Select style" />
+								</SelectTrigger>
+
+							</div>
+							<SelectContent>
+								<SelectItem value="pixel">Pixel</SelectItem>
+								<SelectItem value="anime">Anime</SelectItem>
+							
+							</SelectContent>
+						</Select>
+
+
 
 						{/* select number of cards pair */}
 						<div className="grid grid-cols-6 items-center gap-4">
