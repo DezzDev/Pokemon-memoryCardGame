@@ -1,5 +1,6 @@
 import { useCardStyle } from "@/context/CardStyleContext/useCardStyle";
 import { PokemonMin } from "../../types/Pokemon";
+import {Tilt} from "@jdion/tilt-react";
 import "./CardPokemon.css";
 
 
@@ -179,7 +180,7 @@ export default function CardPokemon({
 
 
 	return (
-		<div
+		<Tilt
 			className='relative cursor-pointer h-[176px] w-[128px] sm:h-[220px] sm:w-[160px] md:h-[275px] md:w-[200px]'
 		>
 
@@ -201,6 +202,6 @@ export default function CardPokemon({
 					onClick={handleClick}
 				/>
 			</div>
-		</div>
+		</Tilt>
 	);
 }
