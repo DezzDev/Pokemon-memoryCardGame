@@ -1,5 +1,7 @@
+import { useCardStyle } from "@/context/CardStyleContext/useCardStyle";
 import { PokemonMin } from "../../types/Pokemon";
 import "./CardPokemon.css";
+
 
 const types = [
 	{
@@ -128,9 +130,6 @@ const types = [
 	},
 ];
 
-
-
-
 type props = {
 	pokemon: PokemonMin,
 	handleChoice: (card: PokemonMin) => void,
@@ -151,14 +150,32 @@ export default function CardPokemon({
 			handleChoice(pokemon);
 		}
 	};
-	
-	const type = types.find(type => type.name === pokemon.type);
 
-	// const gradientFrom = type?.gradientFrom || "bg-slate-800";
-	// const gradientVia = type?.gradientVia || "bg-slate-800";
-	// const gradientTo = type?.gradientTo || "bg-slate-800";
-	// const textColor = type?.textColor || "text-white";
+	// search type en object type with colors
+	const type = types.find(type => type.name === pokemon.type);
 	
+	// context
+	const {cardStyle} = useCardStyle();
+	
+	let imgFront: string | undefined = "";
+	let imgBack: string = "";
+	let text:string = "";
+
+	if(cardStyle.type === "animated"){
+		imgFront = pokemon.img?.other?.showdown.front_default ?? pokemon.img?.other?.["official-artwork"].front_default;
+		text = "poppins-regular";
+		imgBack = "./pokemon_card_backside.webp";
+	}else if(cardStyle.type === "pixel"){
+		imgFront= pokemon.img?.front_default;
+		imgBack = "./pokemon_card_backside_pixel.webp";
+		text= "press-start-2p-regular";
+	}	
+	else {
+		// default
+		imgFront =pokemon.img?.other?.["official-artwork"].front_default;
+		imgBack = "./pokemon_card_backside.webp";
+		text = "poppins-regular";
+	}
 
 
 	return (
@@ -167,18 +184,18 @@ export default function CardPokemon({
 		>
 
 			<div className={`card-content w-full h-full border-[1px] border-white ${flipped ? "flipped" : ""}`}>
-				<div className={`front top-0 absolute flex flex-col h-full w-full overflow-hidden bg-gradient-to-t ${type?.gradientFrom} ${type?.gradientVia} ${type?.gradientTo || ""} ${type?.textColor} ${pokemon.matched ? "flash" : ""} `}>
+				<div className={`front p-1 top-0 absolute grid grid-rows-[70%,30%] items-center justify-center h-full w-full overflow-hidden bg-gradient-to-t ${type?.gradientFrom} ${type?.gradientVia} ${type?.gradientTo || ""} ${type?.textColor} ${pokemon.matched ? "flash" : ""} `}>
 					<img
-						className="h-full w-full block"
-						src={pokemon.img}
+						className="h-full"
+						src={imgFront}
 						alt={pokemon.name + " img"}
 					/>
 					<p
-						className="m-0 p-1 h-full flex justify-center items-center text-center press-start-2p-regular text-xs md:text-sm"
+						className={`mx-1 p-1 h-full flex justify-center items-center text-center text-xs md:text-sm ${text}`}
 					>{pokemon.name.toLocaleUpperCase()}</p>
 				</div>
 				<img
-					src="pokemon_card_backside_pixel.webp"
+					src={imgBack}
 					alt="card back"
 					className='back inset-0 h-full w-full absolute'
 					onClick={handleClick}

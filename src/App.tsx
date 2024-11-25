@@ -23,6 +23,7 @@ import { toast } from "sonner";
 
 // css
 import "./App.css";
+import { useCardStyle } from "./context/CardStyleContext/useCardStyle";
 
 function App() {
 
@@ -64,8 +65,15 @@ function App() {
 	// create confetti instance
 	const jsConfetti = useMemo(() => new JSConfetti(), []);
 
-
-
+	// cardStyle context
+	const {cardStyle} = useCardStyle();
+	let text = "";
+	if(cardStyle.type === "pixel"){
+		text = "press-start-2p-regular";
+	}else{
+		// default
+		text = ".poppins-regular";
+	}
 
 
 	/**
@@ -95,7 +103,7 @@ function App() {
 		}
 		const data: Pokemon[] = await Promise.all(pokemonFetchPromises);
 		const dataReturn: PokemonMin[] = data.map(pokemon => {
-			return { name: pokemon.name, id: pokemon.id, img: pokemon.sprites.front_default, matched: false, type:pokemon.types[0].type.name };
+			return { name: pokemon.name, id: pokemon.id, img: pokemon.sprites, matched: false, type:pokemon.types[0].type.name };
 		});
 
 		return dataReturn;
@@ -130,8 +138,8 @@ function App() {
 
 		const data = await Promise.all(fetchPromises);
 
-		const dataReturn = data.map(pokemon => {
-			return { id: pokemon.id, name: pokemon.name, img: pokemon.sprites.front_default, matched: false, type:pokemon.types[0].type.name };
+		const dataReturn:PokemonMin[] = data.map(pokemon => {
+			return { id: pokemon.id, name: pokemon.name, img: pokemon.sprites, matched: false, type:pokemon.types[0].type.name };
 		});
 		// return pokemon
 		return dataReturn;
@@ -169,7 +177,12 @@ function App() {
 		}
 		return cloneArray;
 	};
-
+	
+	/**
+	 * duplicate array and add index to each card, this way we can differentiate every card 
+	 * @param data array with pokemon
+	 * @returns array with pokemon duplicate and each pokemon with index property
+	 */
 	const duplicatePokemon = (data: PokemonMin[]) => {
 		return [ ...data, ...data ]
 			.map((pokemon, index) => (
@@ -499,7 +512,7 @@ function App() {
 					<Button 
 						variant="secondary" 
 						onClick={() => { newGame().catch(error => { toast.error(`Error: ${error}`); }); }}
-						className="poppins-regular z-10"
+						className={`z-10 ${text}`}
 					>
 						New Game
 					</Button>

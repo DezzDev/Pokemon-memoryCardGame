@@ -1,3 +1,4 @@
+import { useCardStyle } from "@/context/CardStyleContext/useCardStyle";
 
 type props = {
 	player1: boolean,
@@ -16,9 +17,21 @@ export default function Marcador({
 	player2,
 	twoPlayers
 }: props) {
+
+	// cardStyle context
+	const {cardStyle} = useCardStyle();
+	let text = "";
+	if(cardStyle.type === "pixel"){
+		text = "press-start-2p-regular";
+	}else{
+		// default
+		text = ".poppins-regular";
+	}
+
+	
 	return (
 
-		<section className="grid grid-cols-3 justify-around w-full text-center poppins-regular text-outline drop-shadow md:text-xl">
+		<section className={`grid grid-cols-3 justify-around w-full text-center text-outline drop-shadow ${text} md:text-xl`}>
 			<div>
 				{twoPlayers
 					? <div className={player1 ? "text-yellow-500 font-bold scale-150 transition-all " : ""}>

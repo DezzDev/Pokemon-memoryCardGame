@@ -72,7 +72,7 @@
 }
 
 .flipped .front::before {
-	animation: shine 1s;
+	animation: shine 1.3s;
 }
 
 @keyframes shine {

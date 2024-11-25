@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+// shadcn
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,7 +12,6 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-
 import {
 	Sheet,	
 	SheetContent,
@@ -38,12 +37,12 @@ import { toast } from "sonner";
 import {XIcon, Settings} from "lucide-react";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
-
 // data
 import { dataPokemon } from "@/data/pokemonNames";
+//types
 import type { PokemonName } from "@/types/Pokemon";
-
-
+// hooks
+import { useCardStyle } from "@/context/CardStyleContext/useCardStyle";
 
 interface props {
 	setPkmCount: (pkmCount: number) => void,
@@ -134,6 +133,14 @@ export function SheetSetting({manually, setManually, pkmCount, setPkmCount, setT
 		}
 	};
 
+	const {cardStyle, setCardStyle} = useCardStyle();
+	
+	const handleCardStyle = (value: string)=>{
+		if(value === "pixel" || value === "default" || value === "animated"){
+			setCardStyle({type: value});			
+		}
+	};
+
 
 	return (
 
@@ -156,17 +163,18 @@ export function SheetSetting({manually, setManually, pkmCount, setPkmCount, setT
 
 						{/* select card style */}
 
-						<Select>
+						<Select onValueChange={handleCardStyle}>
 							<div className="grid grid-cols-6 items-center gap-4" >
 								<Label className="col-span-2">Card style</Label>
 								<SelectTrigger className="col-span-3">
-									<SelectValue defaultValue={"pixel"} placeholder="Select style" />
+									<SelectValue defaultValue={cardStyle.type} placeholder={cardStyle.type} />
 								</SelectTrigger>
 
 							</div>
 							<SelectContent>
+								<SelectItem value="default">Default</SelectItem>
 								<SelectItem value="pixel">Pixel</SelectItem>
-								<SelectItem value="anime">Anime</SelectItem>
+								<SelectItem value="animated">Animated</SelectItem>
 							
 							</SelectContent>
 						</Select>
