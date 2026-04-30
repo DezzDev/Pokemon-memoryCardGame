@@ -9,8 +9,17 @@ Un divertido juego de memoria de cartas de Pokémon hecho con **React**, **TypeS
 
 ## 📸 Capturas de Pantalla
 
-<!-- ![Captura del Juego](/public/CapturaPokemonMemoriGame.webp)
-![Captura de Victoria](/public/CapturaPokemonMemoriGame2.webp) -->
+### Pantalla Principal
+![Captura del Juego](/public/capture-game.png)
+
+### Configuración del Juego
+![Captura de Configuración](/public/capture-settings.png)
+
+### Partida
+![Captura de Victoria](/public/capture-in-game.png)
+
+### ¡Victoria!
+![Captura de Victoria](/public/capture-win.png)
 
 ## 📝 Características
 
